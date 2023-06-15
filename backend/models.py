@@ -1,44 +1,45 @@
 from ast import List
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import relationship, DeclarativeBase, Mapped
+from sqlalchemy.orm import relationship, Mapped
+
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 
 
-class Base(DeclarativeBase):
-    pass
-
-
-class User(Base):
+class User(db.Model):
     __tablename__ = 'users'
 
-    id: Mapped[int] = Column(Integer, primary_key=True)
-    name: Mapped[str] = Column(String)
-    request_sid: Mapped[str] = Column(String)
-    x: Mapped[int] = Column(Integer)
-    y: Mapped[int] = Column(Integer)
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    request_sid = Column(String)
+    x = Column(Integer)
+    y = Column(Integer)
 
 
-class Color(Base):
+class Color(db.Model):
     __tablename__ = 'colors'
 
-    id: Mapped[int] = Column(Integer, primary_key=True)
-    name: Mapped[str] = Column(String)
-    hex: Mapped[str] = Column(String)
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    hex = Column(String)
 
 
-class StrokePoint(Base):
+class StrokePoint(db.Model):
     __tablename__ = 'stroke_points'
 
-    id: Mapped[int] = Column(Integer, primary_key=True)
-    order: Mapped[int] = Column(Integer, index=True)
-    x: Mapped[int] = Column(Integer, index=True)
-    y: Mapped[int] = Column(Integer, index=True)
+    id = Column(Integer, primary_key=True)
+    stroke_id = Column(Integer, ForeignKey('full_strokes.id'))
+    order = Column(Integer, index=True)
+    x = Column(Integer, index=True)
+    y = Column(Integer, index=True)
 
 
-class FullStroke(Base):
+class FullStroke(db.Model):
     __tablename__ = 'full_strokes'
 
-    id: Mapped[int] = Column(Integer, primary_key=True)
-    color_id: Mapped[int] = Column(Integer, ForeignKey(Color.id))
+    id = Column(Integer, primary_key=True)
+    color_id = Column(Integer, ForeignKey(Color.id))
     points = relationship(StrokePoint)
-    pen_size: Mapped[int] = Column(Integer)
-    user_id: Mapped[int] = Column(Integer, ForeignKey(User.id))
+    pen_size = Column(Integer)
+    user_id = Column(Integer, ForeignKey(User.id))

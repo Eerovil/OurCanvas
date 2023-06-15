@@ -1,16 +1,17 @@
 #! /usr/bin/python3
 # -*- encoding: utf-8 -*-
 
+import sys
+
 from flask import Flask, request, redirect
 from flask_socketio import SocketIO, emit  # noqa
 from flask_sqlalchemy import SQLAlchemy
 
 import settings
 from colors import get_all_colors
-from models import FullStroke, StrokePoint
+from models import db, FullStroke, StrokePoint
 from strokes import full_strokes_serializer, get_all_strokes  # noqa
 from users import get_all_users, get_user, get_user_id_by_sid
-
 
 import logging
 logger = logging.getLogger(__name__)
@@ -18,7 +19,6 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-db = SQLAlchemy()
 app = Flask(__name__, static_url_path='/ourcanvas/', static_folder='../static/')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ourcanvas.db'
@@ -115,4 +115,9 @@ def full_dump():
 
 
 if __name__ == '__main__':
+    if sys.argv[1] == "init":
+        with app.app_context():
+            db.create_all()
+            db.session.commit()
+
     socketio.run(app, debug=True, host="0.0.0.0", port=5175)

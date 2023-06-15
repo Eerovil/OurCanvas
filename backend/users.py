@@ -28,6 +28,7 @@ def get_user(db, nickname):
 
     or create a new one if it doesn't exist
     """
+    # type object 'User' has no attribute 'query'
     user = (
         User
         .query
@@ -57,3 +58,5 @@ def get_all_users():
             "x": user.x,
             "y": user.y
         }
+
+    return ret

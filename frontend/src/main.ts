@@ -107,11 +107,25 @@ async function main() {
     const touch = e.touches[0]
     userDrawHandler.mouseDownHandler(touch.clientX, touch.clientY)
   })
+  drawElement.addEventListener('mousedown', (e) => {
+    userDrawHandler.mouseDownHandler(e.clientX, e.clientY)
+  })
 
   drawElement.addEventListener('touchmove', (e) => {
     e.preventDefault()
     const touch = e.touches[0]
     userDrawHandler.mouseMoveHandler(touch.clientX, touch.clientY)
+  })
+  drawElement.addEventListener('mousemove', (e) => {
+    userDrawHandler.mouseMoveHandler(e.clientX, e.clientY)
+  })
+
+  drawElement.addEventListener('touchend', (e) => {
+    e.preventDefault()
+    userDrawHandler.mouseUpHandler()
+  })
+  drawElement.addEventListener('mouseup', (e) => {
+    userDrawHandler.mouseUpHandler()
   })
 
   // pixiApp.ticker.add(() => {

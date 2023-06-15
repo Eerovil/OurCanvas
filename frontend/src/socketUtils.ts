@@ -14,7 +14,7 @@ interface socketUtilsProps {
 
 class socketUtils {
     fullDumpCallback: (data: FullDump) => void
-    partialDumpCallbacks: any
+    partialDumpCallbacks: any[] = []
     nickname: string
     socket: any
 

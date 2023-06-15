@@ -3,6 +3,7 @@
 export class UserDrawHandler {
     userId: number;
     fullStrokeId: number | null = null;
+    stroking: boolean = false;
     unsentPoints: StrokePoint[] = [];
     pendingUpdate: boolean = false;
     lastOrder: number = -1;
@@ -17,12 +18,17 @@ export class UserDrawHandler {
     mouseDownHandler(x: number, y: number) {
         if (this.startStrokeHandler) {
             this.pendingUpdate = true;
+            this.stroking = true;
             this.startStrokeHandler(x, y);
+            console.log("startStrokeHandler ", x, y)
         }
     }
 
     mouseMoveHandler(x: number, y: number) {
         if (!this.continueStrokeHandler) {
+            return
+        }
+        if (!this.stroking) {
             return
         }
         if (this.fullStrokeId && !this.pendingUpdate) {
@@ -34,13 +40,19 @@ export class UserDrawHandler {
             this.pendingUpdate = true;
             this.continueStrokeHandler(this.fullStrokeId, this.unsentPoints, this.lastOrder)
             this.unsentPoints = []
+            console.log("continueStrokeHandler sent ", x, y)
         } else {
             this.unsentPoints.push({
                 order: 0,  // This is ignored in the backend.
                 x: x,
                 y: y,
             })
+            console.log("continueStrokeHandler ", x, y)
         }
+    }
+
+    mouseUpHandler() {
+        this.stroking = false;
     }
 
     handlePartialDump(data: PartialDump) {
