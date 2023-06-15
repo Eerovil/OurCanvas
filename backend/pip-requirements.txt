@@ -1,0 +1,7 @@
+eventlet
+Flask_SocketIO
+Flask
+sqlitedict
+gevent
+sqlalchemy
+flask_sqlalchemy
