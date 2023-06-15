@@ -110,6 +110,7 @@ def full_dump():
         "users": get_all_users(),
         "strokes": get_all_strokes(0, 0, settings.MAP_SIZE[0], settings.MAP_SIZE[1]),
         "colors": get_all_colors(),
+        "mapSize": settings.MAP_SIZE,
     }
 
 

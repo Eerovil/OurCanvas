@@ -2,7 +2,7 @@ from models import FullStroke, StrokePoint
 from typing import List
 
 
-def full_strokes_serializer(strokes: List[FullStroke, int]) -> None:
+def full_strokes_serializer(strokes) -> None:
     """
     Return a serialized version of the strokes list as dict
     """
