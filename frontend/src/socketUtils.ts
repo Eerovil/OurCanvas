@@ -37,13 +37,14 @@ class socketUtils {
     }
 
     handlePartialDump(data: PartialDump) {
+        console.log("partialDump: ", data);
         for (const callback of this.partialDumpCallbacks) {
             callback(data);
         }
     }
 
     afterFirstConnect() {
-        this.socket.on('entity_update', (data: PartialDump) => {
+        this.socket.on('partialDump', (data: PartialDump) => {
             this.handlePartialDump(data);
         });
         this.socket.on('disconnect', () => {
@@ -85,17 +86,16 @@ class socketUtils {
     }
 
     startStroke(x: number, y: number) {
-        this.socket.emit('start_stroke', {
+        this.socket.emit('startStroke', {
             x: x,
             y: y,
         });
     }
 
-    continueStroke(strokeId: number, points: StrokePoint[], lastOrder: number) {
-        this.socket.emit('continue_stroke', {
+    continueStroke(strokeId: number, points: StrokePoint[]) {
+        this.socket.emit('continueStroke', {
             strokeId: strokeId,
             points: points,
-            lastOrder: lastOrder,
         });
     }
 

@@ -81,18 +81,14 @@ def continue_stroke(data):
     logger.info("Comtinue stroke: %s", data)
 
     full_stroke_id = data.get("strokeId")
-    last_order = data.get("lastOrder")
-    if not last_order:
-        logger.warning("lastOrder not found in data: %s", data)
-        last_order = 1
+
     for stroke_point in data.get("points"):
         stroke_point = StrokePoint(
             stroke_id=full_stroke_id,
-            order=last_order,
+            order=stroke_point.get("order"),
             x=stroke_point.get("x"),
             y=stroke_point.get("y"),
         )
-        last_order += 1
         db.session.add(stroke_point)
     db.session.commit()
 
@@ -115,9 +111,11 @@ def full_dump():
 
 
 if __name__ == '__main__':
-    if sys.argv[1] == "init":
-        with app.app_context():
-            db.create_all()
-            db.session.commit()
+    for arg in sys.argv:
+        if arg == "init_db":
+            with app.app_context():
+                db.drop_all()
+                db.create_all()
+                db.session.commit()
 
     socketio.run(app, debug=True, host="0.0.0.0", port=5175)

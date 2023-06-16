@@ -1,5 +1,5 @@
 from ast import List
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship, Mapped
 
 from flask_sqlalchemy import SQLAlchemy
@@ -31,6 +31,12 @@ class StrokePoint(db.Model):
     id = Column(Integer, primary_key=True)
     stroke_id = Column(Integer, ForeignKey('full_strokes.id'))
     order = Column(Integer, index=True)
+
+    # stroke_id and order are unique together
+    __table_args__ = (
+        UniqueConstraint('stroke_id', 'order'),
+    )
+
     x = Column(Integer, index=True)
     y = Column(Integer, index=True)
 

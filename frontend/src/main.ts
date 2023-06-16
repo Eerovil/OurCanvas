@@ -94,8 +94,8 @@ async function main() {
   userDrawHandler.startStrokeHandler = (x: number, y: number) => {
     socketHandler.startStroke(x, y);
   }
-  userDrawHandler.continueStrokeHandler = (strokeId: number, points: StrokePoint[], lastOrder: number) => {
-    socketHandler.continueStroke(strokeId, points, lastOrder);
+  userDrawHandler.continueStrokeHandler = (strokeId: number, points: StrokePoint[]) => {
+    socketHandler.continueStroke(strokeId, points);
   }
   socketHandler.partialDumpCallbacks.push((data: PartialDump) => {
     userDrawHandler.handlePartialDump(data);
