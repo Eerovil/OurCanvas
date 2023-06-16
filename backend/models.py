@@ -1,5 +1,5 @@
 from ast import List
-from sqlalchemy import Column, Integer, String, ForeignKey, UniqueConstraint
+from sqlalchemy import Column, Integer, String, ForeignKey, UniqueConstraint, Boolean
 from sqlalchemy.orm import relationship, Mapped
 
 from flask_sqlalchemy import SQLAlchemy
@@ -49,3 +49,4 @@ class FullStroke(db.Model):
     points = relationship(StrokePoint)
     pen_size = Column(Integer)
     user_id = Column(Integer, ForeignKey(User.id))
+    finished = Column(Boolean, default=False)

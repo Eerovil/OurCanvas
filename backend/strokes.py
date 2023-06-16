@@ -25,6 +25,7 @@ def full_strokes_serializer(strokes) -> None:
             "color_id": stroke.color_id,
             "pen_size": stroke.pen_size,
             "user_id": stroke.user_id,
+            "finished": stroke.finished,
             "points": []
         }
 

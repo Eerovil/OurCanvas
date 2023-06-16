@@ -11,6 +11,7 @@ type FullStroke = {
     color: number,
     pen_size: number,
     user_id: number,
+    finished: boolean,
 }
 
 type FullStrokeMap = {

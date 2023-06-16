@@ -129,6 +129,11 @@
   dependencies:
     "@types/css-font-loading-module" "^0.0.7"
 
+"@pixi/canvas-renderer@^7.2.4":
+  version "7.2.4"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-renderer/-/canvas-renderer-7.2.4.tgz#e31a53fafcda303e5d3f904235b1921a8c465c91"
+  integrity sha512-H1E7HjU/5tpSS6F695HwiJiwf2M8YXrNsAkwBVNZRw7yVJ66LUMc8ofyIvlcGcZVFObtl7E+p4DaUjiibnx6fQ==
+
 "@pixi/color@7.2.4":
   version "7.2.4"
   resolved "https://registry.yarnpkg.com/@pixi/color/-/color-7.2.4.tgz#6d6d5dbc01ae2a4f1c8eb48e98fff89ac0c3e40d"
@@ -483,7 +488,12 @@ picocolors@^1.0.0:
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.0.0.tgz#cb5bdc74ff3f51892236eaf79d68bc44564ab81c"
   integrity sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==
 
-pixi.js@^7.2.4:
+pixi-viewport@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/pixi-viewport/-/pixi-viewport-5.0.1.tgz#42e3934bd1535c4e60a5b95d09d0cf00bd673917"
+  integrity sha512-fIILU9xztqGnhGF5SYfjn1Rir/7asWkJ8zSUay2hwzPrdGTWFtB4yiIlZDeFaLf7KHA04RRb2kI01Sy1kNksAw==
+
+pixi.js@^7.1.1:
   version "7.2.4"
   resolved "https://registry.yarnpkg.com/pixi.js/-/pixi.js-7.2.4.tgz#4cd6776bf7f74a6c5e121dd1b59329e66be2ce49"
   integrity sha512-nBH60meoLnHxoMFz17HoMxXS4uJpG5jwIdL+Gx2S11TzWgP3iKF+/WLOTrkSdyuQoQSdIBxVqpnYii0Wiox15A==

@@ -1,5 +1,7 @@
 // This handles the drawing that the user has in progress.
 
+import * as PIXI from 'pixi.js'
+
 type UnsentStroke = {
     currentOrder: number,
     sentPoints: StrokePoint[],
@@ -9,15 +11,31 @@ type UnsentStroke = {
 }
 
 export class UserDrawHandler {
+    container: PIXI.Container
     userId: number;
     stroking: boolean = false;
     unsentStrokes: UnsentStroke[] = [];
 
     startStrokeHandler: ((x: number, y: number) => void) | null = null;
     continueStrokeHandler: ((strokeId: number, points: StrokePoint[]) => void) | null = null;
+    finishStrokeHandler: ((strokeId: number) => void) | null = null;
 
-    constructor(userId: number) {
+    constructor(userId: number, container: PIXI.Container) {
         this.userId = userId
+        this.container = container;
+        // container.interactive = true
+        // @ts-ignore
+        this.container.on('pointerdown', (e: PIXI.InteractionEvent) => {
+            this.mouseDownHandler(e.data.global.x, e.data.global.y)
+        })
+        // @ts-ignore
+        this.container.on('pointermove', (e: PIXI.InteractionEvent) => {
+            this.mouseMoveHandler(e.data.global.x, e.data.global.y)
+        })
+        // @ts-ignore
+        this.container.on('pointerup', (e: PIXI.InteractionEvent) => {
+            this.mouseUpHandler()
+        })
         setInterval(() => {
             try {
                 this.sendUpdates()
@@ -90,6 +108,9 @@ export class UserDrawHandler {
         // Mark as pending deletion
         currentStroke.finished = true;
         console.log("mouseUpHandler ", currentStroke.sentPoints.length, currentStroke.unsentPoints.length)
+        if (this.finishStrokeHandler && currentStroke.strokeId) {
+            this.finishStrokeHandler(currentStroke.strokeId);
+        }
     }
 
     handlePartialDump(data: PartialDump) {
@@ -107,7 +128,7 @@ export class UserDrawHandler {
                         }
                     }
                 }
-                if (!unsentStroke.strokeId) {
+                if (!unsentStroke.strokeId || !data.strokes[unsentStroke.strokeId]) {
                     continue
                 }
                 if (unsentStroke.finished) {

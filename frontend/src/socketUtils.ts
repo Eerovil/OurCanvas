@@ -99,6 +99,11 @@ class socketUtils {
         });
     }
 
+    finishStroke(strokeId: number) {
+        this.socket.emit('finishStroke', {
+            strokeId: strokeId,
+        });
+    }
 }
 
 export async function initNetwork(props: socketUtilsProps) {

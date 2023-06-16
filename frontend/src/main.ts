@@ -1,18 +1,16 @@
 import './style.css' // @ts-ignore
+import * as PIXI from 'pixi.js'
 import { initNetwork } from './socketUtils.ts'
-import { Application } from 'pixi.js'
-// import * as PIXI from 'pixi.js';
 import { UserDrawHandler } from './userDraw.ts';
+import { DrawingsDisplay } from './othersDraw.ts';
+import { Viewport } from 'pixi-viewport';
 
 
-if(typeof console === "undefined"){
+if (typeof console === "undefined") {
   (console as any) = {};
 }
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div id="main-container">
-    <div id="draw-element"></div>
-  </div>
 `
 
 
@@ -39,15 +37,6 @@ async function main() {
   let mapSize: number[];
   const isMobile = window.innerWidth < 600
 
-  const pixiApp = new Application({
-    resizeTo: window,
-  });
-
-  document.querySelector<HTMLCanvasElement>('#main-container')!.insertBefore(
-    pixiApp.view as unknown as Node,
-    document.querySelector<HTMLDivElement>('#draw-element')!,
-  )
-
   let nickname: string = parseQueryParams()['nickname']
 
   if (!nickname && isMobile) {
@@ -58,8 +47,11 @@ async function main() {
   setQueryParam('nickname', nickname);
   (window as any).nickname = nickname
 
+  let fullDump: FullDump;
+
   const socketHandler = await initNetwork({
     fullDumpCallback: (data: FullDump) => {
+      fullDump = data;
       Object.assign(globalStrokeMap, data.strokes);
       Object.assign(colors, data.colors)
       Object.assign(users, data.users)
@@ -79,6 +71,7 @@ async function main() {
     mapSizeIsSet()
   })
   mapSize = mapSize!
+  fullDump = fullDump!
 
   let userId;
   for (const user of Object.values(users)) {
@@ -90,42 +83,51 @@ async function main() {
     throw new Error("No user id")
   }
 
-  const userDrawHandler = new UserDrawHandler(userId);
+  const pixiApp = new PIXI.Application({
+    width: mapSize[0],
+    height: mapSize[1],
+    backgroundColor: 0x1099bb,
+    resolution: window.devicePixelRatio || 1,
+    resizeTo: window,
+    autoStart: true,
+  });
+
+  document.body.appendChild(pixiApp.view as unknown as HTMLElement)
+
+  const renderer = pixiApp.renderer;
+  const viewport = new Viewport({
+    events: renderer.events,
+    screenWidth: window.innerWidth,
+    screenHeight: window.innerHeight,
+    worldWidth: mapSize[0],
+    worldHeight: mapSize[1],
+  });
+  // add the viewport to the stage
+  pixiApp.stage.addChild(viewport)
+  viewport
+    .pinch()
+    .wheel()
+    .decelerate()
+
+  const drawingsDisplay = new DrawingsDisplay(viewport, renderer as PIXI.Renderer);
+
+  socketHandler.partialDumpCallbacks.push((data: PartialDump) => {
+    drawingsDisplay.handlePartialDump(data);
+  })
+  drawingsDisplay.handleFullDump(fullDump)
+
+  const userDrawHandler = new UserDrawHandler(userId, viewport);
   userDrawHandler.startStrokeHandler = (x: number, y: number) => {
     socketHandler.startStroke(x, y);
   }
   userDrawHandler.continueStrokeHandler = (strokeId: number, points: StrokePoint[]) => {
     socketHandler.continueStroke(strokeId, points);
   }
+  userDrawHandler.finishStrokeHandler = (strokeId: number) => {
+    socketHandler.finishStroke(strokeId);
+  }
   socketHandler.partialDumpCallbacks.push((data: PartialDump) => {
     userDrawHandler.handlePartialDump(data);
-  })
-  const drawElement = document.querySelector<HTMLDivElement>('#draw-element')!
-
-  drawElement.addEventListener('touchstart', (e) => {
-    e.preventDefault()
-    const touch = e.touches[0]
-    userDrawHandler.mouseDownHandler(touch.clientX, touch.clientY)
-  })
-  drawElement.addEventListener('mousedown', (e) => {
-    userDrawHandler.mouseDownHandler(e.clientX, e.clientY)
-  })
-
-  drawElement.addEventListener('touchmove', (e) => {
-    e.preventDefault()
-    const touch = e.touches[0]
-    userDrawHandler.mouseMoveHandler(touch.clientX, touch.clientY)
-  })
-  drawElement.addEventListener('mousemove', (e) => {
-    userDrawHandler.mouseMoveHandler(e.clientX, e.clientY)
-  })
-
-  drawElement.addEventListener('touchend', (e) => {
-    e.preventDefault()
-    userDrawHandler.mouseUpHandler()
-  })
-  drawElement.addEventListener('mouseup', (e) => {
-    userDrawHandler.mouseUpHandler()
   })
 
   // pixiApp.ticker.add(() => {

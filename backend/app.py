@@ -64,8 +64,8 @@ def start_stroke(data):
         points=[
             StrokePoint(
                 order=0,
-                x=data.get("x"),
-                y=data.get("y"),
+                x=round(data.get("x")),
+                y=round(data.get("y")),
             )
         ],
     )
@@ -86,10 +86,23 @@ def continue_stroke(data):
         stroke_point = StrokePoint(
             stroke_id=full_stroke_id,
             order=stroke_point.get("order"),
-            x=stroke_point.get("x"),
-            y=stroke_point.get("y"),
+            x=round(stroke_point.get("x")),
+            y=round(stroke_point.get("y")),
         )
         db.session.add(stroke_point)
+    db.session.commit()
+
+    emit('partialDump', partial_dump([full_stroke_id]), broadcast=True)
+
+
+@socketio.on('finishStroke')
+def finish_stroke(data):
+    logger.info("Finish stroke: %s", data)
+
+    full_stroke_id = data.get("strokeId")
+
+    full_stroke = FullStroke.query.get(full_stroke_id)
+    full_stroke.finished = True
     db.session.commit()
 
     emit('partialDump', partial_dump([full_stroke_id]), broadcast=True)
