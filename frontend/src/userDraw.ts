@@ -1,6 +1,7 @@
 // This handles the drawing that the user has in progress.
 
 import * as PIXI from 'pixi.js'
+import { fullStrokeToGraphics } from './drawingUtils';
 
 type UnsentStroke = {
     currentOrder: number,
@@ -8,12 +9,14 @@ type UnsentStroke = {
     unsentPoints: StrokePoint[],
     strokeId?: number,
     finished?: boolean,
+    graphics?: PIXI.Graphics,
 }
 
 export class UserDrawHandler {
     container: PIXI.Container
     userId: number;
     stroking: boolean = false;
+
     unsentStrokes: UnsentStroke[] = [];
 
     startStrokeHandler: ((x: number, y: number) => void) | null = null;
@@ -63,6 +66,30 @@ export class UserDrawHandler {
         }
     }
 
+    updateDisplay() {
+        for (const unsentStroke of this.unsentStrokes) {
+            if (unsentStroke.graphics) {
+                unsentStroke.graphics.destroy()
+                unsentStroke.graphics = undefined
+            }
+            const points = unsentStroke.sentPoints.concat(unsentStroke.unsentPoints).map((point) => point as StrokePoint);
+            if (points.length == 0) {
+                continue;
+            }
+            const values = fullStrokeToGraphics({
+                id: unsentStroke.strokeId || 0,
+                points: points,
+                user_id: this.userId,
+                color: 0x000000,
+                pen_size: 2,
+            } as FullStroke);
+            unsentStroke.graphics = values.graphics
+            unsentStroke.graphics.x = values.box.x
+            unsentStroke.graphics.y = values.box.y
+            this.container.addChild(unsentStroke.graphics)
+        }
+    }
+
     mouseDownHandler(x: number, y: number) {
         if (this.startStrokeHandler) {
             this.stroking = true;
@@ -74,6 +101,7 @@ export class UserDrawHandler {
             })
             console.log("startStrokeHandler ", x, y)
         }
+        this.updateDisplay();
     }
 
     mouseMoveHandler(x: number, y: number) {
@@ -97,6 +125,7 @@ export class UserDrawHandler {
             x: x,
             y: y,
         })
+        this.updateDisplay();
     }
 
     mouseUpHandler() {
@@ -111,6 +140,7 @@ export class UserDrawHandler {
         if (this.finishStrokeHandler && currentStroke.strokeId) {
             this.finishStrokeHandler(currentStroke.strokeId);
         }
+        this.updateDisplay();
     }
 
     handlePartialDump(data: PartialDump) {
@@ -136,6 +166,9 @@ export class UserDrawHandler {
                     const receivedPointsCount = data.strokes[unsentStroke.strokeId].points.length
                     if (totalPointsCount == receivedPointsCount) {
                         // We're done with this stroke.
+                        if (unsentStroke.graphics) {
+                            unsentStroke.graphics.destroy()
+                        }
                         this.unsentStrokes.splice(this.unsentStrokes.indexOf(unsentStroke), 1)
                         console.log("handlePartialDump ", unsentStroke.strokeId, totalPointsCount, receivedPointsCount)
                     }
