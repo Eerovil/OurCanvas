@@ -163,7 +163,6 @@ async function main() {
     viewport.moveCenter(mapSize[0], mapSize[1]);
     viewport.x = 0
     viewport.y = 0
-    initChromeCast();
   }
   console.log(viewport);
   const drawingsDisplay = new DrawingsDisplay(viewport, renderer as PIXI.Renderer);
@@ -193,4 +192,11 @@ async function main() {
   dismissLoading();
 }
 
+
+const isMobile = window.innerWidth < 1400;
+if (isMobile) {
+
+  initChromeCast();
+
+}
 main()
