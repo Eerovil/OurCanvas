@@ -142,12 +142,6 @@ async function main() {
     viewport
       .pinch()
       .decelerate()
-      .clampZoom({
-        minWidth: window.innerWidth,
-        minHeight: window.innerHeight,
-        maxWidth: mapSize[0],
-        maxHeight: mapSize[1],
-      })
       .clamp({
         left: 0,
         right: mapSize[0],
