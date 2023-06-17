@@ -140,9 +140,7 @@ async function main() {
 
   if (isMobile) {
     viewport
-      .pinch({
-        factor: 2,  // Faster pan
-      })
+      .pinch()
       .decelerate()
       .clampZoom({
         minWidth: window.innerWidth,
