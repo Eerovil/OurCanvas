@@ -36,12 +36,12 @@ export class UserDrawHandler {
         this.container.on('pointerdown', (e: PIXI.InteractionEvent) => {
             console.log(e)
             try {
-                if (e.data.originalEvent.touches.length > 1) {
+                if (e.data.nativeEvent.touches.length > 1) {
                     this.cancelStroke();
                     console.log('canceling stroke')
                     return
                 }
-                console.log(e.data.originalEvent)
+                console.log(e.data.nativeEvent)
             } catch (e) {
                 // ignore
             }
@@ -53,12 +53,12 @@ export class UserDrawHandler {
         this.container.on('pointermove', (e: PIXI.InteractionEvent) => {
             console.log(e)
             try {
-                if (e.data.originalEvent.touches.length > 1) {
+                if (e.data.nativeEvent.touches.length > 1) {
                     this.cancelStroke();
                     console.log('canceling stroke')
                     return
                 }
-                console.log(e.data.originalEvent)
+                console.log(e.data.nativeEvent)
             } catch (e) {
                 // ignore
             }
