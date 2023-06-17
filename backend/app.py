@@ -81,8 +81,14 @@ def continue_stroke(data):
     logger.info("Comtinue stroke: %s", data)
 
     full_stroke_id = data.get("strokeId")
+    existing_points = StrokePoint.query.filter_by(stroke_id=full_stroke_id)
+    existing_orders = set()
+    for point in existing_points:
+        existing_orders.add(point.order)
 
     for stroke_point in data.get("points"):
+        if stroke_point.get("order") in existing_orders:
+            continue
         stroke_point = StrokePoint(
             stroke_id=full_stroke_id,
             order=stroke_point.get("order"),
