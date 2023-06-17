@@ -23,11 +23,17 @@ class socketUtils {
         this.fullDumpCallback = props.fullDumpCallback || (() => { })
         let reloadTimeout: any;
         try {
+            let transport = ['websocket', 'polling'];
+            const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+            if (iOS) {
+                transport = ['polling'];
+            }
             this.socket = io(URL, {
                 path: "/ourcanvas/socket.io",
                 forceNew: true,
                 retries: 10,
-                ackTimeout: 1000
+                ackTimeout: 1000,
+                transports: transport,
             });
             this.socket.on('disconnect', () => {
                 reloadTimeout = setTimeout(() => {
