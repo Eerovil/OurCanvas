@@ -22,7 +22,7 @@ export class UserDrawHandler {
     maybeStartStroke: { x: number, y: number } | null = null;
 
     selectedColorId: number = 1;
-    selectedPenSize: number = 3;
+    selectedPenSize: number = 6;
     eraserMode: boolean = false;
 
     unsentStrokes: UnsentStroke[] = [];
@@ -81,7 +81,7 @@ export class UserDrawHandler {
 
         const leftSide = document.createElement('div')
 
-        const allPenSizes = [1, 2, 3, 6, 10, 15]
+        const allPenSizes = [1, 3, 6, 10, 15, 30]
         for (const penSize of allPenSizes) {
             const penSizeButton = document.createElement('button')
             penSizeButton.innerText = penSize.toString()
