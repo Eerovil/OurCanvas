@@ -150,7 +150,7 @@ if __name__ == '__main__':
                 db.session.commit()
 
                 # Add color black
-                db.session.add(Color(name="black", hex="#000000"))
+                db.session.add(Color(name="green", hex="#00ff00"))
                 db.session.commit()
 
     socketio.run(app, debug=True, host="0.0.0.0", port=5175)

@@ -19,6 +19,7 @@ export class DrawingsDisplay {
     addFinishedDrawing(fullStroke: FullStroke) {
         // Create a new sprite from the graphics object.
         const { graphics, box } = fullStrokeToGraphics(fullStroke)
+        this.deleteDrawing(fullStroke.id)
 
         const renderer = this.renderer;
 
@@ -36,6 +37,8 @@ export class DrawingsDisplay {
         const sprite = new PIXI.Sprite(renderTexture)
         sprite.position.x = box.x
         sprite.position.y = box.y
+        // red
+        sprite.tint = 0xff0000
         this.drawings.set(fullStroke.id, sprite)
 
         this.container.addChild(sprite)
@@ -46,15 +49,14 @@ export class DrawingsDisplay {
 
     addInProgressDrawing(fullStroke: FullStroke) {
         // Add (or recreate) the drawing which is a graphics object in this case.
-        if (this.progressDrawings.has(fullStroke.id)) {
-            this.container.removeChild(this.progressDrawings.get(fullStroke.id)!)
-            this.progressDrawings.get(fullStroke.id)!.destroy()
-        }
         const { graphics, box } = fullStrokeToGraphics(fullStroke)
+        this.deleteInProgressDrawing(fullStroke.id);
         graphics.x = box.x
         graphics.y = box.y
         graphics.width = box.width
         graphics.height = box.height
+        // red
+        graphics.tint = 0xff0000
         this.progressDrawings.set(fullStroke.id, graphics)
         this.container.addChild(graphics)
         console.log('updated in progress drawing', fullStroke.id)
@@ -62,8 +64,8 @@ export class DrawingsDisplay {
 
     deleteInProgressDrawing(strokeId: number) {
         if (this.progressDrawings.has(strokeId)) {
-            console.log('deleted in progress drawing', strokeId)
-            this.container.removeChild(this.progressDrawings.get(strokeId)!)
+            const removed = this.container.removeChild(this.progressDrawings.get(strokeId)!)
+            console.log('deleted in progress drawing', strokeId, removed)
             this.progressDrawings.get(strokeId)!.destroy()
             this.progressDrawings.delete(strokeId)
         } else {
@@ -73,8 +75,8 @@ export class DrawingsDisplay {
 
     deleteDrawing(strokeId: number) {
         if (this.drawings.has(strokeId)) {
-            console.log('deleted drawing', strokeId)
-            this.container.removeChild(this.drawings.get(strokeId)!)
+            const removed = this.container.removeChild(this.drawings.get(strokeId)!)
+            console.log('deleted drawing', strokeId, removed)
             this.drawings.get(strokeId)!.destroy()
             this.drawings.delete(strokeId)
         } else {

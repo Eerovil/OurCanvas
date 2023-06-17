@@ -167,6 +167,7 @@ def handle_erase(db, strokepoints: List[StrokePoint], full_stroke_id: int):
         .filter(StrokePoint.y <= maxy)
         .filter(StrokePoint.stroke_id != full_stroke_id)
         .filter(StrokePoint.stroke.has(FullStroke.erase == False))
+        .filter(StrokePoint.stroke.has(FullStroke.deleted == False))
         .all()
     )
 

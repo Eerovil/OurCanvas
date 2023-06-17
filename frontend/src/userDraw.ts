@@ -135,6 +135,7 @@ export class UserDrawHandler {
     updateDisplay() {
         for (const unsentStroke of this.unsentStrokes) {
             if (unsentStroke.graphics) {
+                console.log("destroying graphics for ", unsentStroke.strokeId);
                 unsentStroke.graphics.destroy()
                 unsentStroke.graphics = undefined
             }
@@ -153,9 +154,15 @@ export class UserDrawHandler {
                 color_id: this.selectedColorId,
                 pen_size: this.selectedPenSize,
             } as FullStroke);
+            if (unsentStroke.graphics) {
+                console.log("destroying graphics for ", unsentStroke.strokeId);
+                (unsentStroke.graphics as PIXI.Graphics).destroy()
+                unsentStroke.graphics = undefined
+            }
             unsentStroke.graphics = values.graphics
             unsentStroke.graphics.x = values.box.x
             unsentStroke.graphics.y = values.box.y
+            console.log("adding graphics for ", unsentStroke.strokeId);
             this.container.addChild(unsentStroke.graphics)
         }
     }
@@ -290,6 +297,7 @@ export class UserDrawHandler {
                     this.unsentStrokes.splice(this.unsentStrokes.indexOf(unsentStroke), 1)
                     if (unsentStroke.graphics) {
                         unsentStroke.graphics.destroy()
+                        console.log("handlePartialDump destroy ", unsentStroke.strokeId)
                     }
                 }
                 if (unsentStroke.finished) {
