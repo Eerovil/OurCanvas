@@ -97,6 +97,8 @@ async function main() {
 
   document.body.appendChild(pixiApp.view as unknown as HTMLElement)
 
+  const isMobile = window.innerWidth < 600;
+
   const renderer = pixiApp.renderer;
   const viewport = new Viewport({
     events: renderer.events,
@@ -105,6 +107,15 @@ async function main() {
     worldWidth: mapSize[0],
     worldHeight: mapSize[1],
   });
+
+  if (isMobile) {
+    // Zoom in a bit
+    viewport.scale.set(1.5);
+  } else {
+    // Zoom out a bit
+    viewport.scale.set(0.5);
+  }
+
   // add the viewport to the stage
   pixiApp.stage.addChild(viewport)
   viewport

@@ -100,6 +100,7 @@ export class UserDrawHandler {
             colorButton.style.backgroundColor = allColors[colorId].hex;
             colorButton.addEventListener('click', () => {
                 this.selectedColorId = parseInt(colorId)
+                this.eraserMode = false;
             })
             rightSide.appendChild(colorButton)
         }
@@ -107,10 +108,9 @@ export class UserDrawHandler {
         toolBar.appendChild(rightSide)
 
         const eraserButton = document.createElement('button')
-        eraserButton.innerText = 'Kynä'
+        eraserButton.innerText = 'Kumi'
         eraserButton.addEventListener('click', () => {
-            this.eraserMode = !this.eraserMode
-            eraserButton.innerText = this.eraserMode ? 'Kumi' : 'Kynä'
+            this.eraserMode = true;
         })
         toolBar.appendChild(eraserButton)
 
