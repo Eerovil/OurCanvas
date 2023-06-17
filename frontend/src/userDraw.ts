@@ -174,6 +174,7 @@ export class UserDrawHandler {
     }
 
     cancelStroke() {
+        console.log("cancelStroke")
         this.stroking = false;
         this.maybeStartStroke = null;
         const currentStroke = this.unsentStrokes[this.unsentStrokes.length - 1]
