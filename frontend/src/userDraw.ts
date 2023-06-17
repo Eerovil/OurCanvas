@@ -105,6 +105,7 @@ export class UserDrawHandler {
             return;
         }
         this.maybeStartStroke = { x, y };
+        this.stroking = true;
     }
 
     finalizeStartStroke() {
@@ -115,7 +116,6 @@ export class UserDrawHandler {
         const { x, y } = this.maybeStartStroke;
 
         if (this.startStrokeHandler) {
-            this.stroking = true;
             this.startStrokeHandler(x, y, this.selectedPenSize, this.selectedColorId);
             this.unsentStrokes.push({
                 currentOrder: 0,
