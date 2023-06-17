@@ -17,6 +17,7 @@ export class UserDrawHandler {
     container: PIXI.Container
     userId: number;
     stroking: boolean = false;
+    maybeStartStroke: { x: number, y: number } | null = null;
 
     selectedColorId: number = 1;
     selectedPenSize: number = 3;
@@ -35,6 +36,8 @@ export class UserDrawHandler {
         this.container.on('pointerdown', (e: PIXI.InteractionEvent) => {
             try {
                 if (e.data.originalEvent.touches.length > 1) {
+                    this.cancelStroke();
+                    console.log('canceling stroke')
                     return
                 }
             } catch (e) {
@@ -49,6 +52,7 @@ export class UserDrawHandler {
             try {
                 if (e.data.originalEvent.touches.length > 1) {
                     this.cancelStroke();
+                    console.log('canceling stroke')
                     return
                 }
             } catch (e) {
@@ -113,6 +117,16 @@ export class UserDrawHandler {
     }
 
     mouseDownHandler(x: number, y: number) {
+        this.maybeStartStroke = { x, y };
+    }
+
+    finalizeStartStroke() {
+        if (!this.maybeStartStroke) {
+            return
+        }
+
+        const { x, y } = this.maybeStartStroke;
+
         if (this.startStrokeHandler) {
             this.stroking = true;
             this.startStrokeHandler(x, y, this.selectedPenSize, this.selectedColorId);
@@ -128,9 +142,11 @@ export class UserDrawHandler {
             console.log("startStrokeHandler ", x, y)
         }
         this.updateDisplay();
+        this.maybeStartStroke = null;
     }
 
     mouseMoveHandler(x: number, y: number) {
+        this.finalizeStartStroke();
         if (!this.continueStrokeHandler) {
             return
         }
@@ -155,6 +171,7 @@ export class UserDrawHandler {
     }
 
     mouseUpHandler() {
+        this.finalizeStartStroke();
         this.stroking = false;
         const currentStroke = this.unsentStrokes[this.unsentStrokes.length - 1]
         if (!currentStroke) {
@@ -186,10 +203,12 @@ export class UserDrawHandler {
         if (data.strokes) {
             for (const unsentStroke of this.unsentStrokes) {
                 // Fetch strokeId(s)  (It's possible that we managed to make multiple strokes in the time it took to get a partial dump)
+                let serverSideStroke;
                 if (!unsentStroke.strokeId) {
                     for (const stroke of Object.values(data.strokes)) {
                         if (stroke.user_id == this.userId) {
                             unsentStroke.strokeId = stroke.id
+                            serverSideStroke = stroke
                             break
                         }
                     }
@@ -208,6 +227,9 @@ export class UserDrawHandler {
                         }
                         this.unsentStrokes.splice(this.unsentStrokes.indexOf(unsentStroke), 1)
                         console.log("handlePartialDump delete ", unsentStroke.strokeId, totalPointsCount, receivedPointsCount)
+                    }
+                    if (!serverSideStroke?.finished) {
+                        this.finishStrokeHandler && this.finishStrokeHandler(unsentStroke.strokeId)
                     }
                 }
             }
