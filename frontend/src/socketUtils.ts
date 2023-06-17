@@ -31,9 +31,6 @@ class socketUtils {
         } catch (e) {
             console.log("Error: ", e);
         }
-        window.onunload = () => {
-            this.socket.close();
-        }
     }
 
     handlePartialDump(data: PartialDump) {

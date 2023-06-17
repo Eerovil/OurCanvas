@@ -22,7 +22,7 @@ logging.basicConfig(level=logging.INFO)
 app = Flask(__name__, static_url_path='/ourcanvas/', static_folder='../static/')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ourcanvas.db'
-app.config['SQLALCHEMY_ECHO'] = True
+
 db.init_app(app)
 
 app.config['SECRET_KEY'] = 'eero'

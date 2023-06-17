@@ -35,14 +35,15 @@ async function main() {
   const colors: ColorMap = {};
   const users: UserMap = {}
   let mapSize: number[];
-  const isMobile = window.innerWidth < 600
 
   let nickname: string = parseQueryParams()['nickname']
 
-  if (!nickname && isMobile) {
-    nickname = prompt('Kirjoita nimesi') || 'Anonymous'
-  } else if (!isMobile) {
-    nickname = 'TV'
+  // if (!nickname) {
+  //   nickname = prompt('Kirjoita nimesi') || 'Anonymous'
+  // }
+  // Randomize nickname
+  if (!nickname) {
+    nickname = 'Anonymous' + Math.floor(Math.random() * 10000)
   }
   setQueryParam('nickname', nickname);
   (window as any).nickname = nickname

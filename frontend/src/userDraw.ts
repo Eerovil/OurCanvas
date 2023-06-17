@@ -2,6 +2,7 @@
 
 import * as PIXI from 'pixi.js'
 import { fullStrokeToGraphics } from './drawingUtils';
+import { Viewport } from 'pixi-viewport';
 
 type UnsentStroke = {
     currentOrder: number,
@@ -29,11 +30,14 @@ export class UserDrawHandler {
         // container.interactive = true
         // @ts-ignore
         this.container.on('pointerdown', (e: PIXI.InteractionEvent) => {
-            this.mouseDownHandler(e.data.global.x, e.data.global.y)
+            console.log('pointerdown', e.global.x, e.global.y, e)
+            const { x, y } = (container as Viewport).toWorld(e.data.global.x, e.data.global.y)
+            this.mouseDownHandler(x, y);
         })
         // @ts-ignore
         this.container.on('pointermove', (e: PIXI.InteractionEvent) => {
-            this.mouseMoveHandler(e.data.global.x, e.data.global.y)
+            const { x, y } = (container as Viewport).toWorld(e.data.global.x, e.data.global.y)
+            this.mouseMoveHandler(x, y)
         })
         // @ts-ignore
         this.container.on('pointerup', (e: PIXI.InteractionEvent) => {
@@ -61,8 +65,8 @@ export class UserDrawHandler {
             }
             this.continueStrokeHandler(unsentStroke.strokeId, unsentStroke.unsentPoints)
             unsentStroke.sentPoints.push(...unsentStroke.unsentPoints)
+            console.log("continueStrokeHandler ", unsentStroke.strokeId, unsentStroke.unsentPoints.length)
             unsentStroke.unsentPoints = []
-            console.log("continueStrokeHandler ", unsentStroke.strokeId, unsentStroke.sentPoints.length)
         }
     }
 
@@ -96,7 +100,11 @@ export class UserDrawHandler {
             this.startStrokeHandler(x, y);
             this.unsentStrokes.push({
                 currentOrder: 0,
-                sentPoints: [],
+                sentPoints: [{
+                    order: 0,
+                    x: x,
+                    y: y,
+                }],
                 unsentPoints: [],
             })
             console.log("startStrokeHandler ", x, y)
@@ -121,7 +129,7 @@ export class UserDrawHandler {
         }
         currentStroke.currentOrder++;
         currentStroke.unsentPoints.push({
-            order: currentStroke.currentOrder,  // This is ignored in the backend.
+            order: currentStroke.currentOrder,
             x: x,
             y: y,
         })
@@ -161,6 +169,7 @@ export class UserDrawHandler {
                 if (!unsentStroke.strokeId || !data.strokes[unsentStroke.strokeId]) {
                     continue
                 }
+                console.log("handlePartialDump ", unsentStroke.strokeId, unsentStroke.finished)
                 if (unsentStroke.finished) {
                     const totalPointsCount = unsentStroke.sentPoints.length + unsentStroke.unsentPoints.length
                     const receivedPointsCount = data.strokes[unsentStroke.strokeId].points.length
