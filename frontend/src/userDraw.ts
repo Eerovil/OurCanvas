@@ -33,6 +33,13 @@ export class UserDrawHandler {
         // container.interactive = true
         // @ts-ignore
         this.container.on('pointerdown', (e: PIXI.InteractionEvent) => {
+            try {
+                if (e.data.originalEvent.touches.length > 1) {
+                    return
+                }
+            } catch (e) {
+                // ignore
+            }
             console.log('pointerdown', e.global.x, e.global.y, e)
             const { x, y } = (container as Viewport).toWorld(e.data.global.x, e.data.global.y)
             this.mouseDownHandler(x, y);
