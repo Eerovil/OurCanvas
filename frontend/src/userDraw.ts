@@ -44,6 +44,7 @@ export class UserDrawHandler {
                 console.log("e.data.nativeEvent.touches.length", e.data.nativeEvent.touches.length)
             } catch (e) {
                 // ignore
+                console.log(e)
             }
             console.log('pointerdown', e.global.x, e.global.y, e)
             const { x, y } = (container as Viewport).toWorld(e.data.global.x, e.data.global.y)
@@ -61,6 +62,7 @@ export class UserDrawHandler {
                 console.log("e.data.nativeEvent.touches.length", e.data.nativeEvent.touches.length)
             } catch (e) {
                 // ignore
+                console.log(e)
             }
             const { x, y } = (container as Viewport).toWorld(e.data.global.x, e.data.global.y)
             this.mouseMoveHandler(x, y)
