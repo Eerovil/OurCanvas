@@ -8,7 +8,7 @@ declare global {
 const initializeCastApi = function () {
     // @ts-ignore
     cast.framework.CastContext.getInstance().setOptions({
-        receiverApplicationId: '620DFA9A',
+        receiverApplicationId: '95C83BE3',
         // @ts-ignore
         autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
     });
