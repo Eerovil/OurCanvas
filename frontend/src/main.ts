@@ -5,6 +5,7 @@ import { UserDrawHandler } from './userDraw.ts';
 import { DrawingsDisplay } from './othersDraw.ts';
 import { Viewport } from 'pixi-viewport';
 import { getGlobal } from './globals.ts';
+import { initChromeCast } from './chromecastutils.ts';
 
 
 if (typeof console === "undefined") {
@@ -167,6 +168,7 @@ async function main() {
     viewport.scale.set(0.1);
     viewport.x = 0
     viewport.y = 0
+    initChromeCast();
   }
   console.log(viewport);
   const drawingsDisplay = new DrawingsDisplay(viewport, renderer as PIXI.Renderer);
