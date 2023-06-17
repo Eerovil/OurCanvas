@@ -28,6 +28,11 @@ class socketUtils {
                 retries: 10,
                 ackTimeout: 1000
             });
+            this.socket.on('disconnect', () => {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            });
         } catch (e) {
             console.log("Error: ", e);
         }

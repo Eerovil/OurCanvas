@@ -62,6 +62,10 @@ export class UserDrawHandler {
     }
 
     buildToolBar() {
+        const isMobile = window.innerWidth < 800;
+        if (!isMobile) {
+            return;
+        }
         const toolBar = document.createElement('div')
         toolBar.style.position = 'fixed'
         toolBar.style.top = '0px'
@@ -77,7 +81,7 @@ export class UserDrawHandler {
 
         const leftSide = document.createElement('div')
 
-        const allPenSizes = [1, 2, 3, 4, 6, 10]
+        const allPenSizes = [1, 2, 3, 6, 10, 15]
         for (const penSize of allPenSizes) {
             const penSizeButton = document.createElement('button')
             penSizeButton.innerText = penSize.toString()

@@ -74,6 +74,7 @@ async function main() {
     mapSizeIsSet()
   })
   mapSize = mapSize!
+  global.mapSize = mapSize;
   fullDump = fullDump!
 
   let userId;
@@ -110,10 +111,12 @@ async function main() {
 
   if (isMobile) {
     // Zoom in a bit
-    viewport.scale.set(1.5);
+    viewport.scale.set(0.8);
+    // Pan to a random location
+    viewport.moveCorner(Math.random() * (mapSize[0] - window.innerWidth), Math.random() * (mapSize[1] - window.innerHeight));
   } else {
     // Zoom out a bit
-    viewport.scale.set(0.5);
+    viewport.scale.set(0.1);
   }
 
   // add the viewport to the stage

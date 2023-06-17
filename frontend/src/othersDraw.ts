@@ -2,6 +2,7 @@
 
 import * as PIXI from 'pixi.js'
 import { fullStrokeToGraphics } from './drawingUtils'
+import { getGlobal } from './globals';
 
 export class DrawingsDisplay {
     container: PIXI.Container
@@ -14,6 +15,15 @@ export class DrawingsDisplay {
         this.container = container
         // @ts-ignore
         this.renderer = renderer;
+        this.drawBorders();
+    }
+
+    drawBorders() {
+        const mapSize = getGlobal().mapSize;
+        const graphics = new PIXI.Graphics();
+        graphics.lineStyle(10, 0x000000, 1);
+        graphics.drawRect(0, 0, mapSize[0], mapSize[1]);
+        this.container.addChild(graphics);
     }
 
     addFinishedDrawing(fullStroke: FullStroke) {

@@ -1,6 +1,7 @@
 
 class Global {
     colors: ColorMap = {};
+    mapSize: number[] = [];
 }
 
 const global = new Global();
