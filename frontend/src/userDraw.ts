@@ -34,36 +34,12 @@ export class UserDrawHandler {
         // container.interactive = true
         // @ts-ignore
         this.container.on('pointerdown', (e: PIXI.InteractionEvent) => {
-            console.log(e)
-            try {
-                if (e.data.nativeEvent.touches.length > 1) {
-                    this.cancelStroke();
-                    console.log('canceling stroke')
-                    return
-                }
-                console.log("e.data.nativeEvent.touches.length", e.data.nativeEvent.touches.length)
-            } catch (e) {
-                // ignore
-                console.log(e)
-            }
             console.log('pointerdown', e.global.x, e.global.y, e)
             const { x, y } = (container as Viewport).toWorld(e.data.global.x, e.data.global.y)
             this.mouseDownHandler(x, y);
         })
         // @ts-ignore
         this.container.on('pointermove', (e: PIXI.InteractionEvent) => {
-            console.log(e)
-            try {
-                if (e.data.nativeEvent.touches.length > 1) {
-                    this.cancelStroke();
-                    console.log('canceling stroke')
-                    return
-                }
-                console.log("e.data.nativeEvent.touches.length", e.data.nativeEvent.touches.length)
-            } catch (e) {
-                // ignore
-                console.log(e)
-            }
             const { x, y } = (container as Viewport).toWorld(e.data.global.x, e.data.global.y)
             this.mouseMoveHandler(x, y)
         })
@@ -123,6 +99,11 @@ export class UserDrawHandler {
     }
 
     mouseDownHandler(x: number, y: number) {
+        if (this.stroking) {
+            // This is a multi-touch event, cancel the current stroke
+            this.cancelStroke();
+            return;
+        }
         this.maybeStartStroke = { x, y };
     }
 
@@ -194,6 +175,7 @@ export class UserDrawHandler {
 
     cancelStroke() {
         this.stroking = false;
+        this.maybeStartStroke = null;
         const currentStroke = this.unsentStrokes[this.unsentStrokes.length - 1]
         if (!currentStroke) {
             return
