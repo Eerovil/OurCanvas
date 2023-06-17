@@ -97,6 +97,11 @@ def orientation(p, q, r):
 	else:
 		return 0
 
+
+def distance(p1, p2):
+    return ((p1.x - p2.x)**2 + (p1.y - p2.y)**2)**0.5
+
+
 def doIntersect(p1,q1,p2,q2):
 	o1 = orientation(p1, q1, p2)
 	o2 = orientation(p1, q1, q2)
@@ -134,7 +139,7 @@ def handle_erase(db, strokepoints: List[StrokePoint], full_stroke_id: int):
 
     logger.info("Handling erase, %s", [(point.x, point.y) for point in strokepoints])
 
-    if len(strokepoints) < 2:
+    if len(strokepoints) < 1:
         return []
 
     last_x, last_y = None, None
@@ -146,15 +151,18 @@ def handle_erase(db, strokepoints: List[StrokePoint], full_stroke_id: int):
         lines.append((BasePoint(last_x, last_y), BasePoint(strokepoint.x, strokepoint.y)))
         last_x, last_y = strokepoint.x, strokepoint.y
 
-    avg_line_length = sum([((p1.x - p2.x)**2 + (p1.y - p2.y)**2)**0.5 for p1,p2 in lines]) / len(lines)
+    if len(strokepoints) == 1:
+        lines.append((BasePoint(last_x, last_y), BasePoint(last_x, last_y)))
+
+    resulution = 3
 
     # Find points that are within 4 times the average line length
     # Away from the given points
 
-    minx = min([p1.x for p1,p2 in lines]) - avg_line_length * 4
-    maxx = max([p1.x for p1,p2 in lines]) + avg_line_length * 4
-    miny = min([p1.y for p1,p2 in lines]) - avg_line_length * 4
-    maxy = max([p1.y for p1,p2 in lines]) + avg_line_length * 4
+    minx = min([p1.x for p1,p2 in lines]) - resulution * 4
+    maxx = max([p1.x for p1,p2 in lines]) + resulution * 4
+    miny = min([p1.y for p1,p2 in lines]) - resulution * 4
+    maxy = max([p1.y for p1,p2 in lines]) + resulution * 4
 
     # Get all the points that are within the rectangle
     # defined by the min and max values
@@ -179,10 +187,11 @@ def handle_erase(db, strokepoints: List[StrokePoint], full_stroke_id: int):
             continue
         if prev_point is None:
             prev_point = point
-            continue
+            if (len(points) > 1):
+                continue
         for (p1, p2) in lines:
             logger.info("Checking line %s %s %s %s with points %s %s %s %s", p1.x, p1.y, p2.x, p2.y, prev_point.x, prev_point.y, point.x, point.y)
-            if doIntersect(prev_point, point, p1, p2):
+            if (distance(point, p1) < resulution) or (doIntersect(prev_point, point, p1, p2)):
                 # Mark the stroke as deleted
                 FullStroke.query.filter(FullStroke.id == point.stroke_id).update({"deleted": True})
                 changed_strokes[point.stroke_id] = True

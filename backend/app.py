@@ -57,23 +57,26 @@ def start_stroke(data):
     logger.info("Start stroke: %s", data)
     user_id = get_user_id_by_sid(request.sid)
 
+    stroke_point = StrokePoint(
+        order=0,
+        x=round(data.get("x")),
+        y=round(data.get("y")),
+    )
     full_stroke = FullStroke(
         color_id=data.get("colorId"),
         pen_size=data.get("penSize"),
         user_id=user_id,
         erase=data.get("erase") or False,
-        points=[
-            StrokePoint(
-                order=0,
-                x=round(data.get("x")),
-                y=round(data.get("y")),
-            )
-        ],
+        points=[stroke_point],
     )
     db.session.add(full_stroke)
     db.session.commit()
 
-    emit('partialDump', partial_dump([full_stroke]), broadcast=True)
+    changed_stroke_ids = []
+    if data.get("erase"):
+        changed_stroke_ids = handle_erase(db, [stroke_point], full_stroke.id)
+
+    emit('partialDump', partial_dump([full_stroke.id] + changed_stroke_ids), broadcast=True)
 
 
 

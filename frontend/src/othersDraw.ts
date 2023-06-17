@@ -35,8 +35,8 @@ export class DrawingsDisplay {
         const renderTexture = renderer.generateTexture(graphics)
 
         const sprite = new PIXI.Sprite(renderTexture)
-        sprite.position.x = box.x
-        sprite.position.y = box.y
+        sprite.position.x = box.x - 1
+        sprite.position.y = box.y - 1
         // red
         sprite.tint = 0xff0000
         this.drawings.set(fullStroke.id, sprite)
@@ -54,8 +54,8 @@ export class DrawingsDisplay {
         // Add (or recreate) the drawing which is a graphics object in this case.
         const { graphics, box } = fullStrokeToGraphics(fullStroke)
         this.deleteInProgressDrawing(fullStroke.id);
-        graphics.x = box.x
-        graphics.y = box.y
+        graphics.x = box.x + 1
+        graphics.y = box.y + 1
         graphics.width = box.width
         graphics.height = box.height
         // red
