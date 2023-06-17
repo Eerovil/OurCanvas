@@ -24,4 +24,7 @@ export function initChromeCast() {
             }, 500)
         }
     };
+    setTimeout(() => {
+        initializeCastApi();
+    }, 5000)
 }
