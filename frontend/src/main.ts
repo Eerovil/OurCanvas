@@ -137,15 +137,13 @@ async function main() {
 
   // add the viewport to the stage
   pixiApp.stage.addChild(viewport)
-  viewport
-    .pinch({
-      factor: 2,  // Faster pan
-    })
-    .wheel()
-    .decelerate()
 
   if (isMobile) {
     viewport
+      .pinch({
+        factor: 2,  // Faster pan
+      })
+      .decelerate()
       .clampZoom({
         minWidth: window.innerWidth,
         minHeight: window.innerHeight,
@@ -164,6 +162,9 @@ async function main() {
     viewport.moveCorner(Math.random() * (mapSize[0] - window.innerWidth), Math.random() * (mapSize[1] - window.innerHeight));
   } else {
     // Zoom out a bit
+    viewport
+      .drag()
+      .wheel()
     viewport.fitWorld(true);
     viewport.scale.set(0.1);
     viewport.x = 0
