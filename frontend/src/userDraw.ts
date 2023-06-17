@@ -23,6 +23,7 @@ export class UserDrawHandler {
     selectedPenSize: number = 3;
 
     unsentStrokes: UnsentStroke[] = [];
+    blockSend: boolean = false;
 
     startStrokeHandler: ((x: number, y: number, penSize: number, colorId: number) => void) | null = null;
     continueStrokeHandler: ((strokeId: number, points: StrokePoint[]) => void) | null = null;
@@ -60,6 +61,9 @@ export class UserDrawHandler {
         if (!this.continueStrokeHandler) {
             return
         }
+        if (this.blockSend) {
+            return
+        }
         for (const unsentStroke of this.unsentStrokes) {
             if (!unsentStroke.strokeId) {
                 continue
@@ -67,6 +71,7 @@ export class UserDrawHandler {
             if (unsentStroke.unsentPoints.length == 0) {
                 continue
             }
+            this.blockSend = true
             this.continueStrokeHandler(unsentStroke.strokeId, unsentStroke.unsentPoints)
             unsentStroke.sentPoints.push(...unsentStroke.unsentPoints)
             console.log("continueStrokeHandler ", unsentStroke.strokeId, unsentStroke.unsentPoints.length)
@@ -154,6 +159,7 @@ export class UserDrawHandler {
             x: x,
             y: y,
         })
+        this.sendUpdates();
         this.updateDisplay();
     }
 
@@ -189,6 +195,7 @@ export class UserDrawHandler {
     }
 
     handlePartialDump(data: PartialDump) {
+        this.blockSend = false
         if (this.unsentStrokes.length == 0) {
             return;
         }
