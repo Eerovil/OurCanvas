@@ -165,10 +165,10 @@ async function main() {
     viewport
       .drag()
       .wheel()
-    viewport.fitWorld(true);
-    viewport.scale.set(0.1);
-    viewport.x = 0
-    viewport.y = 0
+
+    const scale = Math.min(window.innerWidth / mapSize[0], window.innerHeight / mapSize[1]);
+    viewport.setZoom(scale);
+    viewport.moveCenter(mapSize[0] / 2, mapSize[1] / 2);
     initChromeCast();
   }
   console.log(viewport);
