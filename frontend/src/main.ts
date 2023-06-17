@@ -30,7 +30,32 @@ function setQueryParam(key: string, value: string) {
   window.history.replaceState({}, '', url.toString())
 }
 
+function showLoading() {
+  const loading = document.createElement('div')
+  loading.style.position = 'fixed'
+  loading.style.top = '0'
+  loading.style.left = '0'
+  loading.style.width = '100vw'
+  loading.style.height = '100vh'
+  loading.style.backgroundColor = 'white'
+  loading.style.zIndex = '1000'
+  loading.style.display = 'flex'
+  loading.style.justifyContent = 'center'
+  loading.style.alignItems = 'center'
+  loading.style.fontSize = '2em'
+  loading.style.fontWeight = 'bold'
+  loading.style.color = 'black'
+  loading.innerText = 'Ladataan...'
+  loading.id = 'loading-screen'
+  document.body.appendChild(loading)
+}
+
+function dismissLoading() {
+  document.body.removeChild(document.querySelector('#loading-screen')!)
+}
+
 async function main() {
+  showLoading();
   (window as any).spritesDrawn = 0
   const globalStrokeMap: FullStrokeMap = {}
   const global = getGlobal();
@@ -116,15 +141,29 @@ async function main() {
     viewport.moveCorner(Math.random() * (mapSize[0] - window.innerWidth), Math.random() * (mapSize[1] - window.innerHeight));
   } else {
     // Zoom out a bit
-    viewport.scale.set(0.1);
+    viewport.fitWorld();
   }
 
   // add the viewport to the stage
   pixiApp.stage.addChild(viewport)
   viewport
-    .pinch()
+    .pinch({
+      factor: 2,  // Faster pan
+    })
     .wheel()
     .decelerate()
+    .clampZoom({
+      minWidth: window.innerWidth,
+      minHeight: window.innerHeight,
+      maxWidth: mapSize[0],
+      maxHeight: mapSize[1],
+    })
+    .clamp({
+      left: 0,
+      right: mapSize[0],
+      top: 0,
+      bottom: mapSize[1],
+    })
 
   const drawingsDisplay = new DrawingsDisplay(viewport, renderer as PIXI.Renderer);
 
@@ -150,6 +189,7 @@ async function main() {
   // pixiApp.ticker.add(() => {
   //   gameMap.updateAllEntities();
   // });
+  dismissLoading();
 }
 
 main()

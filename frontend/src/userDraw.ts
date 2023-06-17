@@ -13,6 +13,8 @@ type UnsentStroke = {
     finished?: boolean,
     graphics?: PIXI.Graphics,
     erase: boolean,
+    penSize: number,
+    colorId: number,
 }
 
 export class UserDrawHandler {
@@ -164,8 +166,8 @@ export class UserDrawHandler {
                 id: unsentStroke.strokeId || 0,
                 points: points,
                 user_id: this.userId,
-                color_id: this.selectedColorId,
-                pen_size: this.selectedPenSize,
+                color_id: unsentStroke.colorId,
+                pen_size: unsentStroke.penSize,
             } as FullStroke);
             if (unsentStroke.graphics) {
                 console.log("destroying graphics for ", unsentStroke.strokeId);
@@ -210,6 +212,8 @@ export class UserDrawHandler {
                     y: y,
                 }],
                 unsentPoints: [],
+                penSize: this.selectedPenSize,
+                colorId: this.selectedColorId,
             })
             console.log("startStrokeHandler ", x, y)
         }

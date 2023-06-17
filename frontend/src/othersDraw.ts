@@ -62,10 +62,10 @@ export class DrawingsDisplay {
         // Add (or recreate) the drawing which is a graphics object in this case.
         const { graphics, box } = fullStrokeToGraphics(fullStroke)
         this.deleteInProgressDrawing(fullStroke.id);
-        graphics.x = box.x + 1
-        graphics.y = box.y + 1
-        graphics.width = box.width
-        graphics.height = box.height
+        graphics.x = box.x
+        graphics.y = box.y
+        // graphics.width = box.width
+        // graphics.height = box.height
         this.progressDrawings.set(fullStroke.id, graphics)
         this.container.addChild(graphics)
         console.log('updated in progress drawing', fullStroke.id)
@@ -99,12 +99,13 @@ export class DrawingsDisplay {
             this.deleteDrawing(fullStroke.id)
             return
         }
-        if (fullStroke.finished) {
-            this.deleteInProgressDrawing(fullStroke.id)
-            this.addFinishedDrawing(fullStroke)
-        } else {
-            this.addInProgressDrawing(fullStroke)
-        }
+        // if (fullStroke.finished) {
+        //     this.deleteInProgressDrawing(fullStroke.id)
+        //     this.addFinishedDrawing(fullStroke)
+        // } else {
+        //     this.addInProgressDrawing(fullStroke)
+        // }
+        this.addInProgressDrawing(fullStroke)
     }
 
     handleFullDump(data: FullDump) {
