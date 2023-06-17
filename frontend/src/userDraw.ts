@@ -183,6 +183,9 @@ export class UserDrawHandler {
         }
         // Mark as pending deletion
         currentStroke.finished = true;
+        if (this.finishStrokeHandler && currentStroke.strokeId) {
+            this.finishStrokeHandler(currentStroke.strokeId);
+        }
     }
 
     handlePartialDump(data: PartialDump) {
