@@ -46,6 +46,14 @@ export class UserDrawHandler {
         })
         // @ts-ignore
         this.container.on('pointermove', (e: PIXI.InteractionEvent) => {
+            try {
+                if (e.data.originalEvent.touches.length > 1) {
+                    this.cancelStroke();
+                    return
+                }
+            } catch (e) {
+                // ignore
+            }
             const { x, y } = (container as Viewport).toWorld(e.data.global.x, e.data.global.y)
             this.mouseMoveHandler(x, y)
         })
@@ -159,6 +167,16 @@ export class UserDrawHandler {
             this.finishStrokeHandler(currentStroke.strokeId);
         }
         this.updateDisplay();
+    }
+
+    cancelStroke() {
+        this.stroking = false;
+        const currentStroke = this.unsentStrokes[this.unsentStrokes.length - 1]
+        if (!currentStroke) {
+            return
+        }
+        // Mark as pending deletion
+        currentStroke.finished = true;
     }
 
     handlePartialDump(data: PartialDump) {
