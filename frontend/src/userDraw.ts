@@ -41,7 +41,7 @@ export class UserDrawHandler {
                     console.log('canceling stroke')
                     return
                 }
-                console.log(e.data.nativeEvent)
+                console.log("e.data.nativeEvent.touches.length", e.data.nativeEvent.touches.length)
             } catch (e) {
                 // ignore
             }
@@ -58,7 +58,7 @@ export class UserDrawHandler {
                     console.log('canceling stroke')
                     return
                 }
-                console.log(e.data.nativeEvent)
+                console.log("e.data.nativeEvent.touches.length", e.data.nativeEvent.touches.length)
             } catch (e) {
                 // ignore
             }
