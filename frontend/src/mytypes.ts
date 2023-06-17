@@ -8,7 +8,7 @@ type StrokePoint = {
 type FullStroke = {
     id: number,
     points: StrokePoint[],
-    color: number,
+    color_id: number,
     pen_size: number,
     user_id: number,
     finished: boolean,

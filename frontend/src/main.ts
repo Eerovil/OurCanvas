@@ -4,6 +4,7 @@ import { initNetwork } from './socketUtils.ts'
 import { UserDrawHandler } from './userDraw.ts';
 import { DrawingsDisplay } from './othersDraw.ts';
 import { Viewport } from 'pixi-viewport';
+import { getGlobal } from './globals.ts';
 
 
 if (typeof console === "undefined") {
@@ -32,7 +33,8 @@ function setQueryParam(key: string, value: string) {
 async function main() {
   (window as any).spritesDrawn = 0
   const globalStrokeMap: FullStrokeMap = {}
-  const colors: ColorMap = {};
+  const global = getGlobal();
+  const colors: ColorMap = global.colors;
   const users: UserMap = {}
   let mapSize: number[];
 
@@ -87,7 +89,7 @@ async function main() {
   const pixiApp = new PIXI.Application({
     width: mapSize[0],
     height: mapSize[1],
-    backgroundColor: 0x1099bb,
+    backgroundColor: 0xffffff,
     resolution: window.devicePixelRatio || 1,
     resizeTo: window,
     autoStart: true,
@@ -118,8 +120,8 @@ async function main() {
   drawingsDisplay.handleFullDump(fullDump)
 
   const userDrawHandler = new UserDrawHandler(userId, viewport);
-  userDrawHandler.startStrokeHandler = (x: number, y: number) => {
-    socketHandler.startStroke(x, y);
+  userDrawHandler.startStrokeHandler = (x: number, y: number, penSize: number, colorId: number) => {
+    socketHandler.startStroke(x, y, penSize, colorId);
   }
   userDrawHandler.continueStrokeHandler = (strokeId: number, points: StrokePoint[]) => {
     socketHandler.continueStroke(strokeId, points);

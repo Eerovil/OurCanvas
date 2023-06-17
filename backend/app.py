@@ -9,7 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 import settings
 from colors import get_all_colors
-from models import db, FullStroke, StrokePoint
+from models import Color, db, FullStroke, StrokePoint
 from strokes import full_strokes_serializer, get_all_strokes  # noqa
 from users import get_all_users, get_user, get_user_id_by_sid
 
@@ -129,6 +129,10 @@ if __name__ == '__main__':
             with app.app_context():
                 db.drop_all()
                 db.create_all()
+                db.session.commit()
+
+                # Add color black
+                db.session.add(Color(name="black", hex="#000000"))
                 db.session.commit()
 
     socketio.run(app, debug=True, host="0.0.0.0", port=5175)

@@ -18,9 +18,12 @@ export class UserDrawHandler {
     userId: number;
     stroking: boolean = false;
 
+    selectedColorId: number = 1;
+    selectedPenSize: number = 3;
+
     unsentStrokes: UnsentStroke[] = [];
 
-    startStrokeHandler: ((x: number, y: number) => void) | null = null;
+    startStrokeHandler: ((x: number, y: number, penSize: number, colorId: number) => void) | null = null;
     continueStrokeHandler: ((strokeId: number, points: StrokePoint[]) => void) | null = null;
     finishStrokeHandler: ((strokeId: number) => void) | null = null;
 
@@ -84,8 +87,8 @@ export class UserDrawHandler {
                 id: unsentStroke.strokeId || 0,
                 points: points,
                 user_id: this.userId,
-                color: 0x000000,
-                pen_size: 2,
+                color_id: this.selectedColorId,
+                pen_size: this.selectedPenSize,
             } as FullStroke);
             unsentStroke.graphics = values.graphics
             unsentStroke.graphics.x = values.box.x
@@ -97,7 +100,7 @@ export class UserDrawHandler {
     mouseDownHandler(x: number, y: number) {
         if (this.startStrokeHandler) {
             this.stroking = true;
-            this.startStrokeHandler(x, y);
+            this.startStrokeHandler(x, y, this.selectedPenSize, this.selectedColorId);
             this.unsentStrokes.push({
                 currentOrder: 0,
                 sentPoints: [{
@@ -179,7 +182,7 @@ export class UserDrawHandler {
                             unsentStroke.graphics.destroy()
                         }
                         this.unsentStrokes.splice(this.unsentStrokes.indexOf(unsentStroke), 1)
-                        console.log("handlePartialDump ", unsentStroke.strokeId, totalPointsCount, receivedPointsCount)
+                        console.log("handlePartialDump delete ", unsentStroke.strokeId, totalPointsCount, receivedPointsCount)
                     }
                 }
             }

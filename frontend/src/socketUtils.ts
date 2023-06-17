@@ -82,10 +82,12 @@ class socketUtils {
         });
     }
 
-    startStroke(x: number, y: number) {
+    startStroke(x: number, y: number, penSize: number, colorId: number) {
         this.socket.emit('startStroke', {
             x: x,
             y: y,
+            penSize: penSize,
+            colorId: colorId,
         });
     }
 
