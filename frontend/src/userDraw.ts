@@ -34,12 +34,14 @@ export class UserDrawHandler {
         // container.interactive = true
         // @ts-ignore
         this.container.on('pointerdown', (e: PIXI.InteractionEvent) => {
+            console.log(e)
             try {
                 if (e.data.originalEvent.touches.length > 1) {
                     this.cancelStroke();
                     console.log('canceling stroke')
                     return
                 }
+                console.log(e.data.originalEvent)
             } catch (e) {
                 // ignore
             }
@@ -49,12 +51,14 @@ export class UserDrawHandler {
         })
         // @ts-ignore
         this.container.on('pointermove', (e: PIXI.InteractionEvent) => {
+            console.log(e)
             try {
                 if (e.data.originalEvent.touches.length > 1) {
                     this.cancelStroke();
                     console.log('canceling stroke')
                     return
                 }
+                console.log(e.data.originalEvent)
             } catch (e) {
                 // ignore
             }
