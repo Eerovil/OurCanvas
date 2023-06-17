@@ -124,7 +124,7 @@ async function main() {
 
   document.body.appendChild(pixiApp.view as unknown as HTMLElement)
 
-  const isMobile = window.innerWidth < 600;
+  const isMobile = window.innerWidth < 1400;
 
   const renderer = pixiApp.renderer;
   const viewport = new Viewport({
