@@ -21,6 +21,7 @@ class socketUtils {
     constructor(props: socketUtilsProps) {
         this.nickname = props.nickname
         this.fullDumpCallback = props.fullDumpCallback || (() => { })
+        let reloadTimeout: any;
         try {
             this.socket = io(URL, {
                 path: "/ourcanvas/socket.io",
@@ -29,9 +30,14 @@ class socketUtils {
                 ackTimeout: 1000
             });
             this.socket.on('disconnect', () => {
-                setTimeout(() => {
+                reloadTimeout = setTimeout(() => {
                     window.location.reload();
                 }, 1000);
+            });
+            this.socket.on('connect', () => {
+                if (reloadTimeout) {
+                    clearTimeout(reloadTimeout);
+                }
             });
         } catch (e) {
             console.log("Error: ", e);
