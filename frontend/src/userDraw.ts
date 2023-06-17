@@ -3,6 +3,7 @@
 import * as PIXI from 'pixi.js'
 import { fullStrokeToGraphics } from './drawingUtils';
 import { Viewport } from 'pixi-viewport';
+import { getGlobal } from './globals';
 
 type UnsentStroke = {
     currentOrder: number,
@@ -71,31 +72,39 @@ export class UserDrawHandler {
         toolBar.style.zIndex = '100'
         toolBar.style.display = 'flex'
         toolBar.style.width = '100%'
-        toolBar.style.justifyContent = 'flex-end'
+        toolBar.style.justifyContent = 'space-between'
 
-        const penSizeInput = document.createElement('input')
-        penSizeInput.type = 'number'
-        penSizeInput.value = '3'
-        penSizeInput.min = '1'
-        penSizeInput.max = '100'
-        penSizeInput.style.width = '50px'
-        penSizeInput.addEventListener('change', () => {
-            this.selectedPenSize = parseInt(penSizeInput.value)
-        })
-        toolBar.appendChild(penSizeInput)
 
-        const colorSelect = document.createElement('select')
-        colorSelect.style.width = '50px'
-        colorSelect.addEventListener('change', () => {
-            this.selectedColorId = parseInt(colorSelect.value)
-        })
-        for (let i = 1; i <= 10; i++) {
-            const option = document.createElement('option')
-            option.value = i.toString()
-            option.text = i.toString()
-            colorSelect.appendChild(option)
+        const leftSide = document.createElement('div')
+
+        const allPenSizes = [1, 2, 3, 4, 6, 10]
+        for (const penSize of allPenSizes) {
+            const penSizeButton = document.createElement('button')
+            penSizeButton.innerText = penSize.toString()
+            penSizeButton.addEventListener('click', () => {
+                this.selectedPenSize = penSize
+            })
+            leftSide.appendChild(penSizeButton)
         }
-        toolBar.appendChild(colorSelect)
+        toolBar.appendChild(leftSide)
+
+        const rightSide = document.createElement('div')
+        rightSide.style.height = '100%'
+
+        const allColors = getGlobal().colors
+        for (const colorId in allColors) {
+            const colorButton = document.createElement('button')
+            colorButton.innerHTML = '&nbsp;'
+            colorButton.style.height = '100%';
+            colorButton.style.width = '25px';
+            colorButton.style.backgroundColor = allColors[colorId].hex;
+            colorButton.addEventListener('click', () => {
+                this.selectedColorId = parseInt(colorId)
+            })
+            rightSide.appendChild(colorButton)
+        }
+
+        toolBar.appendChild(rightSide)
 
         const eraserButton = document.createElement('button')
         eraserButton.innerText = 'Kynä'

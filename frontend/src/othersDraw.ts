@@ -37,8 +37,6 @@ export class DrawingsDisplay {
         const sprite = new PIXI.Sprite(renderTexture)
         sprite.position.x = box.x - 1
         sprite.position.y = box.y - 1
-        // red
-        sprite.tint = 0xff0000
         this.drawings.set(fullStroke.id, sprite)
 
         this.container.addChild(sprite)
@@ -58,8 +56,6 @@ export class DrawingsDisplay {
         graphics.y = box.y + 1
         graphics.width = box.width
         graphics.height = box.height
-        // red
-        graphics.tint = 0xff0000
         this.progressDrawings.set(fullStroke.id, graphics)
         this.container.addChild(graphics)
         console.log('updated in progress drawing', fullStroke.id)
