@@ -134,16 +134,6 @@ async function main() {
     worldHeight: mapSize[1],
   });
 
-  if (isMobile) {
-    // Zoom in a bit
-    viewport.scale.set(0.8);
-    // Pan to a random location
-    viewport.moveCorner(Math.random() * (mapSize[0] - window.innerWidth), Math.random() * (mapSize[1] - window.innerHeight));
-  } else {
-    // Zoom out a bit
-    viewport.fitWorld();
-  }
-
   // add the viewport to the stage
   pixiApp.stage.addChild(viewport)
   viewport
@@ -152,19 +142,33 @@ async function main() {
     })
     .wheel()
     .decelerate()
-    .clampZoom({
-      minWidth: window.innerWidth,
-      minHeight: window.innerHeight,
-      maxWidth: mapSize[0],
-      maxHeight: mapSize[1],
-    })
-    .clamp({
-      left: 0,
-      right: mapSize[0],
-      top: 0,
-      bottom: mapSize[1],
-    })
 
+  if (isMobile) {
+    viewport
+      .clampZoom({
+        minWidth: window.innerWidth,
+        minHeight: window.innerHeight,
+        maxWidth: mapSize[0],
+        maxHeight: mapSize[1],
+      })
+      .clamp({
+        left: 0,
+        right: mapSize[0],
+        top: 0,
+        bottom: mapSize[1],
+      })
+    // Zoom in a bit
+    viewport.scale.set(0.8);
+    // Pan to a random location
+    viewport.moveCorner(Math.random() * (mapSize[0] - window.innerWidth), Math.random() * (mapSize[1] - window.innerHeight));
+  } else {
+    // Zoom out a bit
+    viewport.fitWorld(true);
+    viewport.scale.set(0.1);
+    viewport.x = 0
+    viewport.y = 0
+  }
+  console.log(viewport);
   const drawingsDisplay = new DrawingsDisplay(viewport, renderer as PIXI.Renderer);
 
   socketHandler.partialDumpCallbacks.push((data: PartialDump) => {

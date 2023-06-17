@@ -224,7 +224,6 @@ export class UserDrawHandler {
     mouseMoveHandler(x: number, y: number) {
         x = Math.round(x)
         y = Math.round(y)
-        console.log("mouseMoveHandler ", x, y)
         this.finalizeStartStroke();
         if (!this.continueStrokeHandler) {
             return
