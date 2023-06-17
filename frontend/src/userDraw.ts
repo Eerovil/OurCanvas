@@ -231,9 +231,10 @@ export class UserDrawHandler {
                         }
                         this.unsentStrokes.splice(this.unsentStrokes.indexOf(unsentStroke), 1)
                         console.log("handlePartialDump delete ", unsentStroke.strokeId, totalPointsCount, receivedPointsCount)
-                    }
-                    if (!serverSideStroke?.finished) {
-                        this.finishStrokeHandler && this.finishStrokeHandler(unsentStroke.strokeId)
+
+                        if (!serverSideStroke?.finished) {
+                            this.finishStrokeHandler && this.finishStrokeHandler(unsentStroke.strokeId)
+                        }
                     }
                 }
             }
