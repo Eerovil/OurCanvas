@@ -22,7 +22,7 @@ export class UserDrawHandler {
 
     selectedColorId: number = 1;
     selectedPenSize: number = 3;
-    eraserMode: boolean = true;
+    eraserMode: boolean = false;
 
     unsentStrokes: UnsentStroke[] = [];
     blockSend: boolean = false;
@@ -98,7 +98,7 @@ export class UserDrawHandler {
         toolBar.appendChild(colorSelect)
 
         const eraserButton = document.createElement('button')
-        eraserButton.innerText = 'Kumi'
+        eraserButton.innerText = 'Kynä'
         eraserButton.addEventListener('click', () => {
             this.eraserMode = !this.eraserMode
             eraserButton.innerText = this.eraserMode ? 'Kumi' : 'Kynä'
@@ -274,7 +274,7 @@ export class UserDrawHandler {
                 // Fetch strokeId(s)  (It's possible that we managed to make multiple strokes in the time it took to get a partial dump)
                 if (!unsentStroke.strokeId) {
                     for (const stroke of Object.values(data.strokes)) {
-                        if (stroke.user_id == this.userId) {
+                        if (stroke.user_id == this.userId && stroke.points[0].x == unsentStroke.sentPoints[0].x && stroke.points[0].y == unsentStroke.sentPoints[0].y) {
                             unsentStroke.strokeId = stroke.id
                             break
                         }
@@ -285,11 +285,8 @@ export class UserDrawHandler {
                 }
                 const serverSideStroke = data.strokes[unsentStroke.strokeId as number]
                 unsentStroke.strokeId = unsentStroke.strokeId as number;
-                if (!data.strokes[unsentStroke.strokeId]) {
-                    console.log(`handlePartialDump no data.strokes[${unsentStroke.strokeId}]`)
-                }
                 if (!serverSideStroke) {
-                    console.log(`handlePartialDump no serverSideStroke (userId=${this.userId})`)
+                    console.log(`handlePartialDump no serverSideStroke (userId=${this.userId}, strokeId=${unsentStroke.strokeId})`)
                     continue
                 }
                 console.log("handlePartialDump ", unsentStroke.strokeId, unsentStroke.finished)

@@ -48,6 +48,9 @@ export class DrawingsDisplay {
     }
 
     addInProgressDrawing(fullStroke: FullStroke) {
+        if (fullStroke.erase) {
+            return;
+        }
         // Add (or recreate) the drawing which is a graphics object in this case.
         const { graphics, box } = fullStrokeToGraphics(fullStroke)
         this.deleteInProgressDrawing(fullStroke.id);
