@@ -57,21 +57,37 @@ export class DrawingsDisplay {
         graphics.height = box.height
         this.progressDrawings.set(fullStroke.id, graphics)
         this.container.addChild(graphics)
+        console.log('updated in progress drawing', fullStroke.id)
     }
 
     deleteInProgressDrawing(strokeId: number) {
         if (this.progressDrawings.has(strokeId)) {
+            console.log('deleted in progress drawing', strokeId)
             this.container.removeChild(this.progressDrawings.get(strokeId)!)
             this.progressDrawings.get(strokeId)!.destroy()
             this.progressDrawings.delete(strokeId)
+        } else {
+            console.log('tried to delete in progress drawing', strokeId, 'but it did not exist')
         }
     }
 
     deleteDrawing(strokeId: number) {
-
+        if (this.drawings.has(strokeId)) {
+            console.log('deleted drawing', strokeId)
+            this.container.removeChild(this.drawings.get(strokeId)!)
+            this.drawings.get(strokeId)!.destroy()
+            this.drawings.delete(strokeId)
+        } else {
+            console.log('tried to delete drawing', strokeId, 'but it did not exist')
+        }
     }
 
     addDrawing(fullStroke: FullStroke) {
+        if (fullStroke.deleted) {
+            this.deleteInProgressDrawing(fullStroke.id)
+            this.deleteDrawing(fullStroke.id)
+            return
+        }
         if (fullStroke.finished) {
             this.deleteInProgressDrawing(fullStroke.id)
             this.addFinishedDrawing(fullStroke)

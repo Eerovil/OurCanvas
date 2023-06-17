@@ -30,6 +30,7 @@ class StrokePoint(db.Model):
 
     id = Column(Integer, primary_key=True)
     stroke_id = Column(Integer, ForeignKey('full_strokes.id'))
+    stroke = relationship("FullStroke", back_populates="points")
     order = Column(Integer, index=True)
 
     # stroke_id and order are unique together
@@ -46,7 +47,9 @@ class FullStroke(db.Model):
 
     id = Column(Integer, primary_key=True)
     color_id = Column(Integer, ForeignKey(Color.id))
-    points = relationship(StrokePoint)
+    points = relationship(StrokePoint, back_populates="stroke")
     pen_size = Column(Integer)
     user_id = Column(Integer, ForeignKey(User.id))
     finished = Column(Boolean, default=False)
+    erase = Column(Boolean, default=False)
+    deleted = Column(Boolean, default=False)

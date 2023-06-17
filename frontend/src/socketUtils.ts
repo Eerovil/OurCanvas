@@ -34,7 +34,7 @@ class socketUtils {
     }
 
     handlePartialDump(data: PartialDump) {
-        console.log("partialDump: ", data);
+        console.log("partialDump: ", data, data.strokes);
         for (const callback of this.partialDumpCallbacks) {
             callback(data);
         }
@@ -82,12 +82,13 @@ class socketUtils {
         });
     }
 
-    startStroke(x: number, y: number, penSize: number, colorId: number) {
+    startStroke(x: number, y: number, penSize: number, colorId: number, erase: boolean) {
         this.socket.emit('startStroke', {
             x: x,
             y: y,
             penSize: penSize,
             colorId: colorId,
+            erase: erase,
         });
     }
 

@@ -120,8 +120,8 @@ async function main() {
   drawingsDisplay.handleFullDump(fullDump)
 
   const userDrawHandler = new UserDrawHandler(userId, viewport);
-  userDrawHandler.startStrokeHandler = (x: number, y: number, penSize: number, colorId: number) => {
-    socketHandler.startStroke(x, y, penSize, colorId);
+  userDrawHandler.startStrokeHandler = (x: number, y: number, penSize: number, colorId: number, erase: boolean) => {
+    socketHandler.startStroke(x, y, penSize, colorId, erase);
   }
   userDrawHandler.continueStrokeHandler = (strokeId: number, points: StrokePoint[]) => {
     socketHandler.continueStroke(strokeId, points);

@@ -10,7 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 import settings
 from colors import get_all_colors
 from models import Color, db, FullStroke, StrokePoint
-from strokes import full_strokes_serializer, get_all_strokes  # noqa
+from strokes import full_strokes_serializer, get_all_strokes, handle_erase  # noqa
 from users import get_all_users, get_user, get_user_id_by_sid
 
 import logging
@@ -61,6 +61,7 @@ def start_stroke(data):
         color_id=data.get("colorId"),
         pen_size=data.get("penSize"),
         user_id=user_id,
+        erase=data.get("erase") or False,
         points=[
             StrokePoint(
                 order=0,
@@ -78,14 +79,16 @@ def start_stroke(data):
 
 @socketio.on('continueStroke')
 def continue_stroke(data):
-    logger.info("Comtinue stroke: %s", data)
+    logger.info("Continue stroke: %s", data)
 
     full_stroke_id = data.get("strokeId")
     existing_points = StrokePoint.query.filter_by(stroke_id=full_stroke_id)
     existing_orders = set()
-    for point in existing_points:
-        existing_orders.add(point.order)
+    for existing_point in existing_points:
+        existing_orders.add(existing_point.order)
+    erase = FullStroke.query.get(full_stroke_id).erase
 
+    stroke_points = []
     for stroke_point in data.get("points"):
         if stroke_point.get("order") in existing_orders:
             continue
@@ -96,9 +99,14 @@ def continue_stroke(data):
             y=round(stroke_point.get("y")),
         )
         db.session.add(stroke_point)
+        stroke_points.append(stroke_point)
     db.session.commit()
 
-    emit('partialDump', partial_dump([full_stroke_id]), broadcast=True)
+    changed_stroke_ids = []
+    if erase:
+        changed_stroke_ids = handle_erase(db, stroke_points, full_stroke_id)
+
+    emit('partialDump', partial_dump([full_stroke_id] + changed_stroke_ids), broadcast=True)
 
 
 @socketio.on('finishStroke')
@@ -109,8 +117,12 @@ def finish_stroke(data):
 
     full_stroke = FullStroke.query.get(full_stroke_id)
     full_stroke.finished = True
-    db.session.commit()
 
+    if full_stroke.erase:
+        # Delete the entire stroke
+        full_stroke.deleted = True
+
+    db.session.commit()
     emit('partialDump', partial_dump([full_stroke_id]), broadcast=True)
 
 

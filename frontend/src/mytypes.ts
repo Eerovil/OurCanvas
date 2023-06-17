@@ -12,6 +12,8 @@ type FullStroke = {
     pen_size: number,
     user_id: number,
     finished: boolean,
+    erase?: boolean,
+    deleted: boolean,
 }
 
 type FullStrokeMap = {
