@@ -52,7 +52,7 @@ function showLoading() {
   loading.style.flexDirection = 'column'
   loading.style.justifyContent = 'center'
   loading.style.alignItems = 'center'
-  loading.style.fontSize = '2em'
+  loading.style.fontSize = '1em'
   loading.style.fontWeight = 'bold'
   loading.style.color = 'black'
   const loadingText = document.createElement('div')
@@ -112,7 +112,7 @@ async function main() {
 
   let fullDump: FullDump;
 
-  setLoadProgress(0.2, "Yhdistetään palvelimeen...");
+  setLoadProgress(0.2, "Yhdistetään...");
   const socketHandler = await initNetwork({
     fullDumpCallback: (data: FullDump) => {
       fullDump = data;
