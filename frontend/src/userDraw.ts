@@ -107,6 +107,11 @@ export class UserDrawHandler {
             colorButton.addEventListener('click', () => {
                 this.selectedColorId = parseInt(colorId)
                 this.eraserMode = false;
+                // Show the color button as selected
+                for (const child of rightSide.children) {
+                    child.style.border = '2px solid grey'
+                }
+                colorButton.style.border = '2px solid black'
             })
             rightSide.appendChild(colorButton)
         }
