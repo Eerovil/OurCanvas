@@ -6,12 +6,16 @@ declare global {
 }
 
 const initializeCastApi = function () {
-    // @ts-ignore
-    cast.framework.CastContext.getInstance().setOptions({
-        receiverApplicationId: '95C83BE3',
+    try {
         // @ts-ignore
-        autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
-    });
+        cast.framework.CastContext.getInstance().setOptions({
+            receiverApplicationId: '95C83BE3',
+            // @ts-ignore
+            autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
+        });
+    } catch (err) {
+        console.log("error: ", err)
+    }
 };
 
 export function initChromeCast() {
