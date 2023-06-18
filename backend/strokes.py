@@ -185,6 +185,8 @@ def handle_erase(db, strokepoints: List[StrokePoint], full_stroke_id: int):
 
     prev_point = None
     for point in points:
+        if len(changed_strokes.values()) > 0:
+            break  # Only one erase per action
         if point.stroke_id in changed_strokes:
             continue
         if prev_point is None:
