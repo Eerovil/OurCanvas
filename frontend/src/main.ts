@@ -187,10 +187,10 @@ async function main() {
     height: mapSize[1],
     backgroundColor: 0xffffff,
     autoStart: true,
+    resolution: window.devicePixelRatio || 1,
+    resizeTo: window,
   }
-  if (nickname != 'TV') {
-    options.resolution = window.devicePixelRatio || 1
-    options.resizeTo = window
+  if (nickname == 'TV') {
     options.renderer = CanvasRenderer;
   }
 
