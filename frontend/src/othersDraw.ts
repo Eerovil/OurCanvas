@@ -24,7 +24,12 @@ export class DrawingsDisplay {
         const mapSize = getGlobal().mapSize;
         const graphics = new PIXI.Graphics();
         graphics.lineStyle(10, 0x000000, 1);
-        graphics.drawRect(0, 0, mapSize[0], mapSize[1]);
+        // Draw big rectangles outside the map
+        graphics.beginFill(0x000000);
+        graphics.drawRect(-mapSize[0], -mapSize[1], mapSize[0] * 3, mapSize[1]);
+        graphics.drawRect(-mapSize[0], -mapSize[1], mapSize[0], mapSize[1] * 3);
+        graphics.drawRect(-mapSize[0], mapSize[1], mapSize[0] * 3, mapSize[1]);
+        graphics.drawRect(mapSize[0], -mapSize[1], mapSize[0], mapSize[1] * 3);
         this.container.addChild(graphics);
     }
 
