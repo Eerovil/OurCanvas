@@ -29,6 +29,13 @@ app.config['SECRET_KEY'] = 'eero'
 socketio = SocketIO(app, path="/ourcanvas/socket.io", cors_allowed_origins="*")
 
 
+# Add CORS headers
+@app.after_request
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+    return response
+
 
 @app.route('/')
 def index():
