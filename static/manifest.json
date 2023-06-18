@@ -15,6 +15,5 @@
       }
     ],
     "display": "fullscreen",
-    "start_url": "/ourcanvas/index.html",
-    "orientation": "portrait"
+    "start_url": "/ourcanvas/index.html"
   }
