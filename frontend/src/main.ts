@@ -124,6 +124,11 @@ async function main() {
     nickname: nickname,
   })
 
+  setLoadProgress(0.25, "Odotetaan 10 sek...")
+  await new Promise((resolve) => {
+    setTimeout(resolve, 10000)
+  })
+
   setLoadProgress(0.25, "Odotetaan yhteyttä...")
   await socketHandler.waitUntilConnected();
 
