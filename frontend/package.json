@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@sentry/browser": "^7.55.2",
+    "axios": "^1.4.0",
     "pixi-viewport": "^5.0.1"
   }
 }

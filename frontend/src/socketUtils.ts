@@ -1,3 +1,4 @@
+import axios from "axios";
 import { io } from "socket.io-client";
 
 
@@ -76,16 +77,10 @@ class socketUtils {
                 // Send a POST request to /ourcanvas/api/firstConnect
                 // to get the initial state of the game
                 // NOTE: Don't use socketio
-                fetch('/ourcanvas/api/firstConnect', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        nickname: this.nickname,
-                        requestSid: this.socket.id,
-                    })
-                }).then((response) => response.json()).then((data: FullDump) => {
+                axios.post('/ourcanvas/api/firstConnect', {
+                    nickname: this.nickname,
+                    requestSid: this.socket.id,
+                }).then((response) => response.data).then((data: FullDump) => {
                     console.log("connected: ", data);
                     if (!data || !data.users) {
                         console.error("No data")
