@@ -64,7 +64,7 @@ export class UserDrawHandler {
     }
 
     buildToolBar() {
-        const isMobile = window.innerWidth < 1400;
+        const isMobile = window.innerWidth < 1200;
         if (!isMobile) {
             return;
         }

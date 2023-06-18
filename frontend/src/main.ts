@@ -204,7 +204,7 @@ async function main() {
 
   document.body.appendChild(pixiApp.view as unknown as HTMLElement)
 
-  const isMobile = window.innerWidth < 1400;
+  const isMobile = window.innerWidth < 1200;
   console.log('isMobile', isMobile)
 
   const renderer = pixiApp.renderer;
@@ -305,7 +305,7 @@ async function main() {
 }
 
 
-// const isMobile = window.innerWidth < 1400;
+// const isMobile = window.innerWidth < 1200;
 // if (isMobile) {
 
 //   initChromeCast();
