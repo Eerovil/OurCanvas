@@ -55,7 +55,12 @@ function showLoading() {
   loading.style.fontSize = '2em'
   loading.style.fontWeight = 'bold'
   loading.style.color = 'black'
-  loading.innerText = 'Ladataan...'
+  const loadingText = document.createElement('div')
+  loadingText.id = 'loading-text'
+  loadingText.innerText = 'Ladataan...'
+  loadingText.style.marginBottom = '20px'
+  loading.appendChild(loadingText)
+
   loading.id = 'loading-screen'
 
   const progress = document.createElement('progress')
@@ -74,7 +79,8 @@ function setLoadProgress(progress: number, text: string | undefined = undefined)
   progressBar.value = progress
 
   if (text) {
-    loading.innerText = text
+    const loadingText = loading.querySelector<HTMLDivElement>('#loading-text')!
+    loadingText.innerText = text
   }
 }
 
