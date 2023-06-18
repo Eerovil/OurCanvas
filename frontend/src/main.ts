@@ -112,6 +112,11 @@ async function main() {
 
   let fullDump: FullDump;
 
+  setLoadProgress(0.25, "Odotetaan 10 sek...")
+  await new Promise((resolve) => {
+    setTimeout(resolve, 10000)
+  })
+
   setLoadProgress(0.2, "Yhdistetään...");
   const socketHandler = await initNetwork({
     fullDumpCallback: (data: FullDump) => {
@@ -122,11 +127,6 @@ async function main() {
       mapSize = data.mapSize;
     },
     nickname: nickname,
-  })
-
-  setLoadProgress(0.25, "Odotetaan 10 sek...")
-  await new Promise((resolve) => {
-    setTimeout(resolve, 10000)
   })
 
   setLoadProgress(0.25, "Odotetaan yhteyttä...")
