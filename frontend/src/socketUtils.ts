@@ -40,16 +40,17 @@ class socketUtils {
                 ackTimeout: 1000,
                 transports: transport,
             });
-            // this.socket.on('disconnect', () => {
-            //     reloadTimeout = setTimeout(() => {
-            //         window.location.reload();
-            //     }, 10000);
-            // });
-            // this.socket.on('connect', () => {
-            //     if (reloadTimeout) {
-            //         clearTimeout(reloadTimeout);
-            //     }
-            // });
+            let reloadTimeout: any = null;
+            this.socket.on('disconnect', () => {
+                reloadTimeout = setTimeout(() => {
+                    window.location.reload();
+                }, 10000);
+            });
+            this.socket.on('connect', () => {
+                if (reloadTimeout) {
+                    clearTimeout(reloadTimeout);
+                }
+            });
         } catch (e) {
             console.log("Error: ", e);
         }

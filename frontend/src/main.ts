@@ -188,10 +188,12 @@ async function main() {
     resizeTo: window,
     autoStart: true,
   });
+  console.log('pixiApp', pixiApp)
 
   document.body.appendChild(pixiApp.view as unknown as HTMLElement)
 
   const isMobile = window.innerWidth < 1400;
+  console.log('isMobile', isMobile)
 
   const renderer = pixiApp.renderer;
   const viewport = new Viewport({
@@ -201,6 +203,7 @@ async function main() {
     worldWidth: mapSize[0],
     worldHeight: mapSize[1],
   });
+  console.log('viewport', viewport)
 
   // add the viewport to the stage
   pixiApp.stage.addChild(viewport)
@@ -216,6 +219,7 @@ async function main() {
     viewport.y = 0;
   } else {
     // Zoom out a bit
+    console.log('zooming: mapSize', mapSize)
     viewport
       .drag()
       .wheel()
@@ -248,6 +252,7 @@ async function main() {
   })
 
   setLoadProgress(0.5, "Piirretään...");
+  await new Promise((resolve) => setTimeout(resolve, 10))
   const totalStrokeCount = Object.keys(fullDump.strokes).length;
   let count = 0;
   for (const strokeId in fullDump.strokes) {
