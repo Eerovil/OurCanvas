@@ -283,5 +283,8 @@ async function main() {
 //   initChromeCast();
 
 // }
-initChromeCast();
+if (parseQueryParams()['nickname'] != 'TV') {
+  initChromeCast();
+}
+
 main()
