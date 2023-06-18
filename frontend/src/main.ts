@@ -72,6 +72,7 @@ function dismissLoading() {
 
 async function main() {
   showLoading();
+  setLoadProgress(0.1);
   (window as any).spritesDrawn = 0
   const globalStrokeMap: FullStrokeMap = {}
   const global = getGlobal();
