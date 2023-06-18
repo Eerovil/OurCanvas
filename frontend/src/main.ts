@@ -115,7 +115,7 @@ async function main() {
   if (nickname == 'TV') {
     setTimeout(() => {
       (window as any).debuggerConnected = true
-    }, 30000)
+    }, 60000)
     await new Promise((resolve) => {
       const checkOK = () => {
         if ((window as any).debuggerConnected) {
