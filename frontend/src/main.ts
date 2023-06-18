@@ -247,8 +247,8 @@ async function main() {
           .clampZoom({
             minWidth: window.innerWidth,
             minHeight: window.innerHeight,
-            maxWidth: mapSize[0],
-            maxHeight: mapSize[1],
+            maxWidth: mapSize[0] * 2,
+            maxHeight: mapSize[1] * 2,
           })
       }, 2000)
     }, 500)
