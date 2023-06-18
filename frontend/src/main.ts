@@ -5,7 +5,7 @@ import { UserDrawHandler } from './userDraw.ts';
 import { DrawingsDisplay } from './othersDraw.ts';
 import { Viewport } from 'pixi-viewport';
 import { getGlobal } from './globals.ts';
-import { initChromeCast } from './chromecastutils.ts';
+import { initChromeCast, initChromeCastReceiver } from './chromecastutils.ts';
 
 
 if (typeof console === "undefined") {
@@ -22,6 +22,15 @@ Sentry.init({
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 `
+function loadScript(src: string) {
+  let script = document.createElement('script');
+  script.src = src;
+  const promise = new Promise((resolve) => {
+    script.onload = resolve;
+  })
+  document.head.append(script);
+  return promise;
+}
 
 
 function parseQueryParams() {
@@ -309,7 +318,14 @@ async function main() {
 
 // }
 if (parseQueryParams()['nickname'] != 'TV') {
-  initChromeCast();
+  loadScript('https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1').then(() => {
+    initChromeCast();
+  });
+} else {
+  loadScript('https://www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js').then(() => {
+    initChromeCastReceiver();
+  });
 }
 
-main()
+main();
+

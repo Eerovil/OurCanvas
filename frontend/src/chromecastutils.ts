@@ -32,3 +32,13 @@ export function initChromeCast() {
         initializeCastApi();
     }, 5000)
 }
+
+export function initChromeCastReceiver() {
+    // @ts-ignore
+    const context = cast.framework.CastReceiverContext.getInstance();
+    // @ts-ignore
+    const options = new cast.framework.CastReceiverOptions();
+
+    options.disableIdleTimeout = true;
+    context.start(options);
+}
