@@ -180,14 +180,20 @@ async function main() {
     setTimeout(resolve, 10)
   });
 
-  const pixiApp = new PIXI.Application({
+  const options: any = {
     width: mapSize[0],
     height: mapSize[1],
     backgroundColor: 0xffffff,
-    resolution: window.devicePixelRatio || 1,
-    resizeTo: window,
     autoStart: true,
-  });
+  }
+  if (nickname != 'TV') {
+    options.resolution = window.devicePixelRatio || 1
+    options.resizeTo = window
+    options.autoStart = true
+  }
+
+  console.log('options', options)
+  const pixiApp = new PIXI.Application(options);
   console.log('pixiApp', pixiApp)
 
   document.body.appendChild(pixiApp.view as unknown as HTMLElement)
