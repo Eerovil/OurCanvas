@@ -21,11 +21,17 @@ export function fullStrokeToGraphics(fullStroke: FullStroke): { graphics: PIXI.G
 
     const graphics = new PIXI.Graphics();
     const color = getGlobal().colors[fullStroke.color_id].hex;
-    graphics.lineStyle(fullStroke.pen_size, color, 0.9);
+    graphics.lineStyle({
+        width: fullStroke.pen_size,
+        color: color,
+        alpha: 0.9,
+        join: PIXI.LINE_JOIN.ROUND,
+        cap: PIXI.LINE_CAP.ROUND,
+    });
     if (fullStroke.points.length == 1) {
         // Draw filled dot
-        graphics.beginFill(color);
-        graphics.drawCircle(fullStroke.points[0].x - originX, fullStroke.points[0].y - originY, fullStroke.pen_size / 3.14);
+        graphics.moveTo(fullStroke.points[0].x - originX, fullStroke.points[0].y - originY);
+        graphics.lineTo(fullStroke.points[0].x - originX + 1, fullStroke.points[0].y - originY + 1);
     } else {
         graphics.moveTo(fullStroke.points[0].x - originX, fullStroke.points[0].y - originY);
         for (const point of fullStroke.points) {
