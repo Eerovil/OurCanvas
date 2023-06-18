@@ -44,11 +44,13 @@ export class DrawingsDisplay {
         //     renderTexture,
         // });
 
-        const renderTexture = renderer.generateTexture(graphics)
+        const renderTexture = renderer.generateTexture(graphics, {
+            region: new PIXI.Rectangle(-50, -50, box.width + 100, box.height + 100),
+        })
 
         const sprite = new PIXI.Sprite(renderTexture)
-        sprite.position.x = box.x - 1
-        sprite.position.y = box.y - 1
+        sprite.position.x = box.x - 50
+        sprite.position.y = box.y - 50
         this.drawings.set(fullStroke.id, sprite)
 
         this.childContainer.addChild(sprite)
