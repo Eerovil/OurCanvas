@@ -145,6 +145,10 @@ async function main() {
 
   setLoadProgress(0.3, "Odotetaan dataa...");
   await new Promise((resolve) => {
+    setTimeout(resolve, 10)
+  });
+
+  await new Promise((resolve) => {
     const mapSizeIsSet = () => {
       if (mapSize) {
         console.log('map size is set')
@@ -171,6 +175,10 @@ async function main() {
   }
 
   setLoadProgress(0.4, "Luodaan piirtäjä...");
+  await new Promise((resolve) => {
+    setTimeout(resolve, 10)
+  });
+
   const pixiApp = new PIXI.Application({
     width: mapSize[0],
     height: mapSize[1],
