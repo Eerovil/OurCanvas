@@ -38,7 +38,7 @@ class socketUtils {
             this.socket.on('disconnect', () => {
                 reloadTimeout = setTimeout(() => {
                     window.location.reload();
-                }, 1000);
+                }, 10000);
             });
             this.socket.on('connect', () => {
                 if (reloadTimeout) {
