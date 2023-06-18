@@ -237,6 +237,8 @@ async function main() {
   // pixiApp.ticker.add(() => {
   //   gameMap.updateAllEntities();
   // });
+  setLoadProgress(1, "Valmis!");
+  await new Promise((resolve) => setTimeout(resolve, 1000))
   dismissLoading();
 
   if (isMobile) {
