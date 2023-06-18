@@ -20,6 +20,20 @@ logging.basicConfig(level=logging.INFO)
 
 
 app = Flask(__name__, static_url_path='/ourcanvas/', static_folder='../static/')
+
+import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
+
+sentry_sdk.init(
+    dsn="https://6ba66efbbfa24148b2ff80ce744f9c4a@o4505339492433920.ingest.sentry.io/4505378821963776",
+    integrations=[
+        FlaskIntegration(),
+    ],
+
+    traces_sample_rate=0.0
+)
+
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ourcanvas.db'
 

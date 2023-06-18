@@ -12,6 +12,14 @@ if (typeof console === "undefined") {
   (console as any) = {};
 }
 
+
+import * as Sentry from "@sentry/browser";
+
+Sentry.init({
+  dsn: "https://cd94180401e04e13a95facd9478f813d@o4505339492433920.ingest.sentry.io/4505378816327680",
+});
+
+
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 `
 

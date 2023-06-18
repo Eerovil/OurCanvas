@@ -5,3 +5,4 @@ sqlitedict
 gevent
 sqlalchemy
 flask_sqlalchemy
+sentry-sdk[flask]
