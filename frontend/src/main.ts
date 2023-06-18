@@ -82,6 +82,7 @@ function setLoadProgress(progress: number, text: string | undefined = undefined)
     const loadingText = loading.querySelector<HTMLDivElement>('#loading-text')!
     loadingText.innerText = text
   }
+  console.log('progress', progress, text)
 }
 
 function dismissLoading() {
