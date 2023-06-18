@@ -1,6 +1,7 @@
 import './style.css' // @ts-ignore
 import * as PIXI from 'pixi.js'
-import { CanvasRenderer } from '@pixi/canvas-renderer';
+// @ts-ignore
+import * as PIXILEGACY from 'pixi-legacy'
 import { initNetwork } from './socketUtils.ts'
 import { UserDrawHandler } from './userDraw.ts';
 import { DrawingsDisplay } from './othersDraw.ts';
@@ -191,7 +192,7 @@ async function main() {
     resizeTo: window,
   }
   if (nickname == 'TV') {
-    options.renderer = CanvasRenderer;
+    options.forceCanvas = true;
   }
 
   console.log('options', options)

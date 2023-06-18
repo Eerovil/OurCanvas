@@ -129,10 +129,55 @@
   dependencies:
     "@types/css-font-loading-module" "^0.0.7"
 
-"@pixi/canvas-renderer@^7.2.4":
+"@pixi/canvas-display@7.2.4":
+  version "7.2.4"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-display/-/canvas-display-7.2.4.tgz#6decb8f43a66b3a2192932e8844bc0ddd56cec54"
+  integrity sha512-LZpEouVGvHlJ/fOD3fVvbLXgUW9cB+BkvhNPQO5VhShLHkzonGszw/t6+EHYseZ7iTs7fqunoyDmUNfy9BfqLQ==
+
+"@pixi/canvas-extract@7.2.4":
+  version "7.2.4"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-extract/-/canvas-extract-7.2.4.tgz#69ecb5f1deb5417b763f34103807805bd4256ed4"
+  integrity sha512-qZeNbhraYhcSoS9PfILtqQCGhbwUcGLgyh8YiZWSfEswkn4yNTZx1OaFoJr/M0vpfJ0vpuPwVneTQ81prOVCUg==
+
+"@pixi/canvas-graphics@7.2.4":
+  version "7.2.4"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-graphics/-/canvas-graphics-7.2.4.tgz#916c1b70edee2dfc958590c7129962e27627b187"
+  integrity sha512-1dgb2huvtXNbnpUZQwedKBONNdU3oTS+v0liQYhYBLA2UQ5UmCsQVg8E3aVeCl0HzcGZtfgO8hsnjdtqnc3PQQ==
+
+"@pixi/canvas-mesh@7.2.4":
+  version "7.2.4"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-mesh/-/canvas-mesh-7.2.4.tgz#cc3678d17a7393dd3238834136954293d02713e8"
+  integrity sha512-H2RjktRG2e0eNh0K1tYmVdjlCPvXOFdZQ8Xakt1pOXxAfjudr9a7A7KkyQUP6Qi3jCi0sqiTgTi6Hr3P8tzhMg==
+
+"@pixi/canvas-particle-container@7.2.4":
+  version "7.2.4"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-particle-container/-/canvas-particle-container-7.2.4.tgz#3ffbeb528bac10b4a31b37392420bdd4f1ff5c0c"
+  integrity sha512-jySV2UYVOOA/em0zbaaksywFqtBuD7V/j66NydMNPrOK21sGuQ37mnE2W0lj4E9A+B4IUPZgU2EejlnGQ8Hb7g==
+
+"@pixi/canvas-prepare@7.2.4":
+  version "7.2.4"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-prepare/-/canvas-prepare-7.2.4.tgz#cea12b3c157b37cc271c9bbe67533f0d8b1d94be"
+  integrity sha512-AIJC/Z8onUyFCJuVUR7hEavJCB0iIZXulsM/MfUlFgp0v1XVZGQuQa0Ca+bMppdtP/jxgBC4aYnXxmS/maPI8w==
+
+"@pixi/canvas-renderer@7.2.4":
   version "7.2.4"
   resolved "https://registry.yarnpkg.com/@pixi/canvas-renderer/-/canvas-renderer-7.2.4.tgz#e31a53fafcda303e5d3f904235b1921a8c465c91"
   integrity sha512-H1E7HjU/5tpSS6F695HwiJiwf2M8YXrNsAkwBVNZRw7yVJ66LUMc8ofyIvlcGcZVFObtl7E+p4DaUjiibnx6fQ==
+
+"@pixi/canvas-sprite-tiling@7.2.4":
+  version "7.2.4"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-sprite-tiling/-/canvas-sprite-tiling-7.2.4.tgz#b5816e49f003b73539c9b0a1a63585fdc1f3c3e6"
+  integrity sha512-vjqKIgtvf5iS0EvF2t8hQ8FRADTCQiIvPvXblE7W4JlgkCpLe2vSA4IR8nx+ulVCHfX07n8Y/z0hW9uPSKfgIw==
+
+"@pixi/canvas-sprite@7.2.4":
+  version "7.2.4"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-sprite/-/canvas-sprite-7.2.4.tgz#54d0e85357f40756161b3346530088d10ad9046d"
+  integrity sha512-MJer7Gqd77r78UHUKBBvd5NDHDjYWoIs470RwiBi1HcD7qNVaAyV4n4iCiNzsZlJxhYDpqaKCC527V8hLYMxyA==
+
+"@pixi/canvas-text@7.2.4":
+  version "7.2.4"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-text/-/canvas-text-7.2.4.tgz#2e5c1d3859cb9d6db25ccb50b7d85c1f8bd2d906"
+  integrity sha512-ErqV7PSI1eQck+2Dpei+JCinmJ0SRskC3FKCG5r9Z2bDl0NPe8rHFZbULQOGyUBeosLX8w5ON4kqAW+z6tqmqw==
 
 "@pixi/color@7.2.4":
   version "7.2.4"
@@ -669,7 +714,24 @@ pixi-viewport@^5.0.1:
   resolved "https://registry.yarnpkg.com/pixi-viewport/-/pixi-viewport-5.0.1.tgz#42e3934bd1535c4e60a5b95d09d0cf00bd673917"
   integrity sha512-fIILU9xztqGnhGF5SYfjn1Rir/7asWkJ8zSUay2hwzPrdGTWFtB4yiIlZDeFaLf7KHA04RRb2kI01Sy1kNksAw==
 
-pixi.js@^7.1.1:
+pixi.js-legacy@^7.2.4:
+  version "7.2.4"
+  resolved "https://registry.yarnpkg.com/pixi.js-legacy/-/pixi.js-legacy-7.2.4.tgz#7a4b28f9ab611704ad74d3893eb23f85d0ba651d"
+  integrity sha512-OnvPPPYs8lzz+igOfstsd6Mdfj6lyBMY3vb6xK04Vej9tgJHJTXOX/Ohc5qGRQXb1/v2/SKNm8WcQYtLKnXuAQ==
+  dependencies:
+    "@pixi/canvas-display" "7.2.4"
+    "@pixi/canvas-extract" "7.2.4"
+    "@pixi/canvas-graphics" "7.2.4"
+    "@pixi/canvas-mesh" "7.2.4"
+    "@pixi/canvas-particle-container" "7.2.4"
+    "@pixi/canvas-prepare" "7.2.4"
+    "@pixi/canvas-renderer" "7.2.4"
+    "@pixi/canvas-sprite" "7.2.4"
+    "@pixi/canvas-sprite-tiling" "7.2.4"
+    "@pixi/canvas-text" "7.2.4"
+    pixi.js "7.2.4"
+
+pixi.js@7.2.4, pixi.js@^7.1.1:
   version "7.2.4"
   resolved "https://registry.yarnpkg.com/pixi.js/-/pixi.js-7.2.4.tgz#4cd6776bf7f74a6c5e121dd1b59329e66be2ce49"
   integrity sha512-nBH60meoLnHxoMFz17HoMxXS4uJpG5jwIdL+Gx2S11TzWgP3iKF+/WLOTrkSdyuQoQSdIBxVqpnYii0Wiox15A==
