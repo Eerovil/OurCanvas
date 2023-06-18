@@ -281,7 +281,7 @@ async function main() {
       continue;
     }
     fullStrokeToGraphics(stroke, graphics);
-    await new Promise((resolve) => setTimeout(resolve, 1))
+    await new Promise((resolve) => setTimeout(resolve, 0))
     setLoadProgress(0.5 + 0.5 * count / totalStrokeCount);
     count++;
   }
