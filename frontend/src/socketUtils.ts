@@ -120,6 +120,5 @@ class socketUtils {
 
 export async function initNetwork(props: socketUtilsProps) {
     const ret = new socketUtils(props);
-    await ret.waitUntilConnected();
     return ret;
 }

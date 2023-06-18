@@ -14,6 +14,7 @@ if (typeof console === "undefined") {
 
 
 import * as Sentry from "@sentry/browser";
+import { Socket } from 'socket.io-client';
 
 Sentry.init({
   dsn: "https://cd94180401e04e13a95facd9478f813d@o4505339492433920.ingest.sentry.io/4505378816327680",
@@ -123,6 +124,9 @@ async function main() {
     },
     nickname: nickname,
   })
+
+  setLoadProgress(0.25, "Odotetaan yhteyttä...")
+  await socketHandler.waitUntilConnected();
 
   setLoadProgress(0.3, "Odotetaan dataa...");
   await new Promise((resolve) => {
