@@ -62,13 +62,6 @@ class socketUtils {
         this.socket.on('partialDump', (data: PartialDump) => {
             this.handlePartialDump(data);
         });
-        this.socket.on('disconnect', () => {
-            // After a disconnect, we want to reload the page
-            // after reconnecting
-            this.socket.on('connect', () => {
-                window.location.reload();
-            });
-        });
     }
 
     waitUntilConnected() {
