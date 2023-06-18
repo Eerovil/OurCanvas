@@ -1,7 +1,7 @@
 import './style.css' // @ts-ignore
 import * as PIXI from 'pixi.js'
 // @ts-ignore
-import * as PIXILEGACY from 'pixi-legacy'
+import * as PIXILEGACY from 'pixi.js-legacy'
 import { initNetwork } from './socketUtils.ts'
 import { UserDrawHandler } from './userDraw.ts';
 import { DrawingsDisplay } from './othersDraw.ts';
@@ -191,12 +191,15 @@ async function main() {
     resolution: window.devicePixelRatio || 1,
     resizeTo: window,
   }
+  let pixiApp: PIXI.Application | PIXILEGACY.Application;
   if (nickname == 'TV') {
     options.forceCanvas = true;
+    pixiApp = new PIXILEGACY.Application(options);
+  } else {
+    pixiApp = new PIXI.Application(options);
   }
 
   console.log('options', options)
-  const pixiApp = new PIXI.Application(options);
   console.log('pixiApp', pixiApp)
 
   document.body.appendChild(pixiApp.view as unknown as HTMLElement)
