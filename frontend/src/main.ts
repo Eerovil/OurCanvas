@@ -14,7 +14,6 @@ if (typeof console === "undefined") {
 
 
 import * as Sentry from "@sentry/browser";
-import { fullStrokeToGraphics } from './drawingUtils.ts';
 
 Sentry.init({
   dsn: "https://cd94180401e04e13a95facd9478f813d@o4505339492433920.ingest.sentry.io/4505378816327680",
@@ -274,26 +273,24 @@ async function main() {
   await new Promise((resolve) => setTimeout(resolve, 10))
   const totalStrokeCount = Object.keys(fullDump.strokes).length;
   let count = 0;
-  const graphics = new PIXI.Graphics();
   for (const strokeId in fullDump.strokes) {
     const stroke = fullDump.strokes[strokeId];
     if (stroke.erase) {
       continue;
     }
-    fullStrokeToGraphics(stroke, graphics);
+    drawingsDisplay.preDrawDrawing(stroke)
     await new Promise((resolve) => setTimeout(resolve, 1))
     setLoadProgress(0.5 + 0.5 * count / totalStrokeCount);
     count++;
   }
-  viewport.addChild(graphics);
-  // for (const strokeId in fullDump.strokes) {
-  //   const stroke = fullDump.strokes[strokeId];
-  //   if (stroke.erase) {
-  //     continue;
-  //   }
-  //   const graphics = drawingsDisplay.progressDrawings.get(stroke.id);
-  //   drawingsDisplay.childContainer.addChild(graphics!)
-  // }
+  for (const strokeId in fullDump.strokes) {
+    const stroke = fullDump.strokes[strokeId];
+    if (stroke.erase) {
+      continue;
+    }
+    const graphics = drawingsDisplay.progressDrawings.get(stroke.id);
+    drawingsDisplay.childContainer.addChild(graphics!)
+  }
   // pixiApp.ticker.add(() => {
   //   gameMap.updateAllEntities();
   // });

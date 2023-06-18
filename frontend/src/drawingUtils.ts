@@ -2,7 +2,7 @@
 import * as PIXI from 'pixi.js-legacy'
 import { getGlobal } from './globals'
 
-export function fullStrokeToGraphics(fullStroke: FullStroke, passedGraphics?: PIXI.Graphics): { graphics: PIXI.Graphics, box: { x: number, y: number, width: number, height: number } } {
+export function fullStrokeToGraphics(fullStroke: FullStroke): { graphics: PIXI.Graphics, box: { x: number, y: number, width: number, height: number } } {
     let minX = fullStroke.points[0].x
     let maxX = fullStroke.points[0].x
     let minY = fullStroke.points[0].y
@@ -13,20 +13,13 @@ export function fullStrokeToGraphics(fullStroke: FullStroke, passedGraphics?: PI
         minY = Math.min(minY, point.y)
         maxY = Math.max(maxY, point.y)
     }
-    let originX = minX
-    let originY = minY
+    const originX = minX
+    const originY = minY
 
     const width = maxX - minX
     const height = maxY - minY
 
-    let graphics;
-    if (passedGraphics) {
-        graphics = passedGraphics;
-        originX = 0;
-        originY = 0;
-    } else {
-        graphics = new PIXI.Graphics();
-    }
+    const graphics = new PIXI.Graphics();
     const color = getGlobal().colors[fullStroke.color_id].hex;
     graphics.lineStyle({
         width: fullStroke.pen_size,
