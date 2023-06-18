@@ -109,7 +109,7 @@ export class UserDrawHandler {
                 this.eraserMode = false;
                 // Show the color button as selected
                 for (const child of rightSide.children) {
-                    child.style.border = '2px solid grey'
+                    (child as HTMLButtonElement).style.border = '2px solid grey'
                 }
                 colorButton.style.border = '2px solid black'
             })
