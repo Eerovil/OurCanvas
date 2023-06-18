@@ -21,7 +21,7 @@ export function fullStrokeToGraphics(fullStroke: FullStroke): { graphics: PIXI.G
 
     const graphics = new PIXI.Graphics();
     const color = getGlobal().colors[fullStroke.color_id].hex;
-    graphics.lineStyle(fullStroke.pen_size, color, 1);
+    graphics.lineStyle(fullStroke.pen_size, color, 0.9);
     if (fullStroke.points.length == 1) {
         // Draw filled dot
         graphics.beginFill(color);

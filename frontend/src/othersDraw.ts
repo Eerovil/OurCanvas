@@ -28,38 +28,6 @@ export class DrawingsDisplay {
         this.container.addChild(graphics);
     }
 
-    addFinishedDrawing(fullStroke: FullStroke) {
-        // Create a new sprite from the graphics object.
-        const { graphics, box } = fullStrokeToGraphics(fullStroke)
-        this.deleteDrawing(fullStroke.id)
-
-        const renderer = this.renderer;
-
-        // const renderTexture = PIXI.RenderTexture.create({
-        //     width: box.width,
-        //     height: box.height,
-        //     resolution: window.devicePixelRatio
-        // });
-        // renderer.render(graphics, {
-        //     renderTexture,
-        // });
-
-        const renderTexture = renderer.generateTexture(graphics, {
-            region: new PIXI.Rectangle(-50, -50, box.width + 100, box.height + 100),
-        })
-
-        const sprite = new PIXI.Sprite(renderTexture)
-        sprite.position.x = box.x - 50
-        sprite.position.y = box.y - 50
-        this.drawings.set(fullStroke.id, sprite)
-
-        this.childContainer.addChild(sprite)
-        graphics.destroy()
-        // this.childContainer.addChild(graphics)
-
-        console.log('added finished drawing', fullStroke.id)
-    }
-
     addInProgressDrawing(fullStroke: FullStroke) {
         if (fullStroke.erase) {
             return;
@@ -69,8 +37,6 @@ export class DrawingsDisplay {
         this.deleteInProgressDrawing(fullStroke.id);
         graphics.x = box.x
         graphics.y = box.y
-        // graphics.width = box.width
-        // graphics.height = box.height
         this.progressDrawings.set(fullStroke.id, graphics)
         this.childContainer.addChild(graphics)
         console.log('updated in progress drawing', fullStroke.id)
@@ -87,29 +53,11 @@ export class DrawingsDisplay {
         }
     }
 
-    deleteDrawing(strokeId: number) {
-        if (this.drawings.has(strokeId)) {
-            const removed = this.childContainer.removeChild(this.drawings.get(strokeId)!)
-            console.log('deleted drawing', strokeId, removed)
-            this.drawings.get(strokeId)!.destroy()
-            this.drawings.delete(strokeId)
-        } else {
-            console.log('tried to delete drawing', strokeId, 'but it did not exist')
-        }
-    }
-
     addDrawing(fullStroke: FullStroke) {
         if (fullStroke.deleted) {
             this.deleteInProgressDrawing(fullStroke.id)
-            this.deleteDrawing(fullStroke.id)
             return
         }
-        // if (fullStroke.finished) {
-        //     this.deleteInProgressDrawing(fullStroke.id)
-        //     this.addFinishedDrawing(fullStroke)
-        // } else {
-        //     this.addInProgressDrawing(fullStroke)
-        // }
         this.addInProgressDrawing(fullStroke)
     }
 
