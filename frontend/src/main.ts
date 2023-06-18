@@ -229,7 +229,6 @@ async function main() {
   if (isMobile) {
     viewport
       .pinch()
-      .decelerate()
       .drag()
     viewport.fitWorld(true);
     const scale = Math.min(window.innerWidth / mapSize[0], window.innerHeight / mapSize[1]);
