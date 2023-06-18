@@ -282,7 +282,7 @@ async function main() {
     }
     fullStrokeToGraphics(stroke, graphics);
     await new Promise((resolve) => setTimeout(resolve, 0))
-    setLoadProgress(0.5 + 0.5 * count / totalStrokeCount);
+    setLoadProgress(0.5 + 0.5 * count / totalStrokeCount, "Piirretään..." + count + "/" + totalStrokeCount);
     count++;
   }
   viewport.addChild(graphics);
