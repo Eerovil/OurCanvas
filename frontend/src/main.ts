@@ -158,16 +158,11 @@ async function main() {
     viewport
       .pinch()
       .decelerate()
-      .clampZoom({
-        minWidth: window.innerWidth,
-        minHeight: window.innerHeight,
-        maxWidth: mapSize[0],
-        maxHeight: mapSize[1],
-      })
-      viewport.fitWorld(true);
-      viewport.setZoom(0.1);
-      viewport.x = 0;
-      viewport.y = 0;
+    viewport.fitWorld(true);
+    const scale = Math.min(window.innerWidth / mapSize[0], window.innerHeight / mapSize[1]);
+    viewport.setZoom(scale / 2);
+    viewport.x = 0;
+    viewport.y = 0;
   } else {
     // Zoom out a bit
     viewport
@@ -226,6 +221,15 @@ async function main() {
         scale: scale,
         ease: 'easeInOutSine',
       })
+      setTimeout(() => {
+        viewport
+          .clampZoom({
+            minWidth: window.innerWidth,
+            minHeight: window.innerHeight,
+            maxWidth: mapSize[0],
+            maxHeight: mapSize[1],
+          })
+      }, 2000)
     }, 500)
   }
 }
