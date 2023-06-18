@@ -68,10 +68,14 @@ function showLoading() {
   document.body.appendChild(loading)
 }
 
-function setLoadProgress(progress: number) {
+function setLoadProgress(progress: number, text: string | undefined = undefined) {
   const loading = document.querySelector<HTMLDivElement>('#loading-screen')!
   const progressBar = loading.querySelector<HTMLProgressElement>('progress')!
   progressBar.value = progress
+
+  if (text) {
+    loading.innerText = text
+  }
 }
 
 function dismissLoading() {
@@ -102,6 +106,7 @@ async function main() {
 
   let fullDump: FullDump;
 
+  setLoadProgress(0.2, "Yhdistetään palvelimeen...");
   const socketHandler = await initNetwork({
     fullDumpCallback: (data: FullDump) => {
       fullDump = data;
@@ -113,6 +118,7 @@ async function main() {
     nickname: nickname,
   })
 
+  setLoadProgress(0.3, "Odotetaan dataa...");
   await new Promise((resolve) => {
     const mapSizeIsSet = () => {
       if (mapSize) {
@@ -137,6 +143,7 @@ async function main() {
     throw new Error("No user id")
   }
 
+  setLoadProgress(0.4, "Luodaan piirtäjä...");
   const pixiApp = new PIXI.Application({
     width: mapSize[0],
     height: mapSize[1],
@@ -204,7 +211,7 @@ async function main() {
     userDrawHandler.handlePartialDump(data);
   })
 
-  setLoadProgress(0.5);
+  setLoadProgress(0.5, "Piirretään...");
   const totalStrokeCount = Object.keys(fullDump.strokes).length;
   let count = 0;
   for (const strokeId in fullDump.strokes) {
