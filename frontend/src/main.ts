@@ -193,10 +193,11 @@ async function main() {
 }
 
 
-const isMobile = window.innerWidth < 1400;
-if (isMobile) {
+// const isMobile = window.innerWidth < 1400;
+// if (isMobile) {
 
-  initChromeCast();
+//   initChromeCast();
 
-}
+// }
+initChromeCast();
 main()
