@@ -1,6 +1,6 @@
 // This uses pixijs and draws everything other people have drawn.
 
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js-legacy'
 import { fullStrokeToGraphics } from './drawingUtils'
 import { getGlobal } from './globals';
 

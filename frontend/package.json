@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "pixi.js": "^7.1.1",
     "socket.io-client": "^4.6.2",
     "typescript": "^5.0.2",
     "vite": "^4.3.9",

@@ -1,6 +1,6 @@
 // This handles the drawing that the user has in progress.
 
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js-legacy'
 import { fullStrokeToGraphics } from './drawingUtils';
 import { Viewport } from 'pixi-viewport';
 import { getGlobal } from './globals';

@@ -1,4 +1,5 @@
-import * as PIXI from 'pixi.js'
+
+import * as PIXI from 'pixi.js-legacy'
 import { getGlobal } from './globals'
 
 export function fullStrokeToGraphics(fullStroke: FullStroke): { graphics: PIXI.Graphics, box: { x: number, y: number, width: number, height: number } } {
