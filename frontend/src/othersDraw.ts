@@ -104,12 +104,13 @@ export class DrawingsDisplay {
             this.deleteDrawing(fullStroke.id)
             return
         }
-        if (fullStroke.finished) {
-            this.deleteInProgressDrawing(fullStroke.id)
-            this.addFinishedDrawing(fullStroke)
-        } else {
-            this.addInProgressDrawing(fullStroke)
-        }
+        // if (fullStroke.finished) {
+        //     this.deleteInProgressDrawing(fullStroke.id)
+        //     this.addFinishedDrawing(fullStroke)
+        // } else {
+        //     this.addInProgressDrawing(fullStroke)
+        // }
+        this.addInProgressDrawing(fullStroke)
     }
 
     handleFullDump(data: FullDump) {
