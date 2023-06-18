@@ -36,16 +36,16 @@ class socketUtils {
                 ackTimeout: 1000,
                 transports: transport,
             });
-            this.socket.on('disconnect', () => {
-                reloadTimeout = setTimeout(() => {
-                    window.location.reload();
-                }, 10000);
-            });
-            this.socket.on('connect', () => {
-                if (reloadTimeout) {
-                    clearTimeout(reloadTimeout);
-                }
-            });
+            // this.socket.on('disconnect', () => {
+            //     reloadTimeout = setTimeout(() => {
+            //         window.location.reload();
+            //     }, 10000);
+            // });
+            // this.socket.on('connect', () => {
+            //     if (reloadTimeout) {
+            //         clearTimeout(reloadTimeout);
+            //     }
+            // });
         } catch (e) {
             console.log("Error: ", e);
         }
@@ -67,6 +67,7 @@ class socketUtils {
     waitUntilConnected() {
         return new Promise((resolve) => {
             this.socket.on('connect', () => {
+                console.log("connected");
                 // Send a POST request to /ourcanvas/api/firstConnect
                 // to get the initial state of the game
                 // NOTE: Don't use socketio
@@ -82,6 +83,8 @@ class socketUtils {
                     this.fullDumpCallback(data);
                     this.afterFirstConnect();
                     resolve(null);
+                }).catch((e) => {
+                    console.error("Error: ", e);
                 });
             });
         });
