@@ -33,16 +33,21 @@ export class DrawingsDisplay {
         this.container.addChild(graphics);
     }
 
-    addInProgressDrawing(fullStroke: FullStroke) {
-        if (fullStroke.erase) {
-            return;
-        }
-        // Add (or recreate) the drawing which is a graphics object in this case.
+    preDrawDrawing(fullStroke: FullStroke) {
         const { graphics, box } = fullStrokeToGraphics(fullStroke)
         this.deleteInProgressDrawing(fullStroke.id);
         graphics.x = box.x
         graphics.y = box.y
         this.progressDrawings.set(fullStroke.id, graphics)
+        return graphics;
+    }
+
+    addInProgressDrawing(fullStroke: FullStroke) {
+        if (fullStroke.erase) {
+            return;
+        }
+        // Add (or recreate) the drawing which is a graphics object in this case.
+        const graphics = this.preDrawDrawing(fullStroke)
         this.childContainer.addChild(graphics)
         console.log('updated in progress drawing', fullStroke.id)
     }

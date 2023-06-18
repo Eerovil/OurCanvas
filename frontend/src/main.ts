@@ -274,10 +274,22 @@ async function main() {
   const totalStrokeCount = Object.keys(fullDump.strokes).length;
   let count = 0;
   for (const strokeId in fullDump.strokes) {
-    drawingsDisplay.addDrawing(fullDump.strokes[strokeId])
+    const stroke = fullDump.strokes[strokeId];
+    if (stroke.erase) {
+      continue;
+    }
+    drawingsDisplay.preDrawDrawing(stroke)
     await new Promise((resolve) => setTimeout(resolve, 1))
     setLoadProgress(0.5 + 0.5 * count / totalStrokeCount);
     count++;
+  }
+  for (const strokeId in fullDump.strokes) {
+    const stroke = fullDump.strokes[strokeId];
+    if (stroke.erase) {
+      continue;
+    }
+    const graphics = drawingsDisplay.progressDrawings.get(stroke.id);
+    drawingsDisplay.childContainer.addChild(graphics!)
   }
   // pixiApp.ticker.add(() => {
   //   gameMap.updateAllEntities();
