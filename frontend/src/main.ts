@@ -237,7 +237,7 @@ async function main() {
       .wheel()
 
     const scale = Math.min(window.innerWidth / mapSize[0], window.innerHeight / mapSize[1]);
-    viewport.setZoom(scale / 2);
+    viewport.setZoom(scale / 1.6);
     viewport.moveCenter(mapSize[0], mapSize[1]);
     viewport.x = 0
     viewport.y = 0
