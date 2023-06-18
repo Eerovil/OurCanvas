@@ -84,7 +84,6 @@ export class UserDrawHandler {
 
         const leftSide = document.createElement('div')
         const rightSide = document.createElement('div')
-        const eraserButton = document.createElement('button')
         const panButton = document.createElement('button')
 
         const updateInputs = () => {
@@ -106,12 +105,6 @@ export class UserDrawHandler {
                 }
             }
 
-            if (this.eraserMode) {
-                eraserButton.style.border = '2px solid red'
-            } else {
-                eraserButton.style.border = '2px solid grey'
-            }
-
             if (this.panMode) {
                 panButton.style.border = '2px solid red'
             } else {
@@ -128,7 +121,6 @@ export class UserDrawHandler {
             penSizeButton.innerText = penSize.toString()
             penSizeButton.addEventListener('click', () => {
                 this.selectedPenSize = penSize
-                this.eraserMode = false;
                 this.panMode = false;
                 updateInputs();
             })
@@ -149,7 +141,6 @@ export class UserDrawHandler {
             colorButton.style.backgroundColor = allColors[colorId].hex;
             colorButton.addEventListener('click', () => {
                 this.selectedColorId = parseInt(colorId)
-                this.eraserMode = false;
                 this.panMode = false;
                 updateInputs();
             })
@@ -162,19 +153,9 @@ export class UserDrawHandler {
         panButton.style.width = '50px'
         panButton.addEventListener('click', () => {
             this.panMode = !this.panMode;
-            this.eraserMode = false;
             updateInputs();
         })
         toolBar.appendChild(panButton)
-
-        eraserButton.innerText = '❌'
-        eraserButton.style.width = '50px'
-        eraserButton.addEventListener('click', () => {
-            this.eraserMode = !this.eraserMode;
-            this.panMode = false;
-            updateInputs();
-        })
-        toolBar.appendChild(eraserButton)
 
         document.body.appendChild(toolBar)
 
@@ -258,7 +239,7 @@ export class UserDrawHandler {
         x = Math.round(x)
         y = Math.round(y)
         if (this.stroking) {
-            // This is a multi-touch event, cancel the current stroke
+            // This is a multi-touch event, cancel the current strok
             this.cancelStroke();
             return;
         }

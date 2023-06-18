@@ -24,7 +24,7 @@ export function fullStrokeToGraphics(fullStroke: FullStroke): { graphics: PIXI.G
     graphics.lineStyle({
         width: fullStroke.pen_size,
         color: color,
-        alpha: 0.95,
+        alpha: 1,
         join: PIXI.LINE_JOIN.ROUND,
         cap: PIXI.LINE_CAP.ROUND,
     });
