@@ -23,7 +23,7 @@ class socketUtils {
         this.fullDumpCallback = props.fullDumpCallback || (() => { })
         let reloadTimeout: any;
         try {
-            let transport = ['websocket', 'polling'];
+            let transport = ['polling'];
             const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
             if (iOS) {
                 transport = ['polling'];
