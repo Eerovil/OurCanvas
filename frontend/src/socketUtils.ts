@@ -87,6 +87,7 @@ class socketUtils {
                     }
                     this.fullDumpCallback(data);
                     this.afterFirstConnect();
+                    console.log("afterFirstConnect done");
                     resolve(null);
                 }).catch((e) => {
                     console.error("Error: ", e);

@@ -147,6 +147,7 @@ async function main() {
   await new Promise((resolve) => {
     const mapSizeIsSet = () => {
       if (mapSize) {
+        console.log('map size is set')
         resolve(null)
       } else {
         setTimeout(mapSizeIsSet, 100)
