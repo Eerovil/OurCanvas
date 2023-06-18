@@ -114,6 +114,7 @@ async function main() {
   let fullDump: FullDump;
 
   if (nickname == 'TV') {
+    setLoadProgress(0.2, "Odotetaan...");
     setTimeout(() => {
       (window as any).debuggerConnected = true
     }, 60000)
