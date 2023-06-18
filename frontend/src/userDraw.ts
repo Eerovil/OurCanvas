@@ -158,7 +158,8 @@ export class UserDrawHandler {
 
         toolBar.appendChild(rightSide)
 
-        panButton.innerText = 'Käsi'
+        panButton.innerText = '✋'  // Hand emoji
+        panButton.style.width = '50px'
         panButton.addEventListener('click', () => {
             this.panMode = !this.panMode;
             this.eraserMode = false;
@@ -166,7 +167,8 @@ export class UserDrawHandler {
         })
         toolBar.appendChild(panButton)
 
-        eraserButton.innerText = 'Kumi'
+        eraserButton.innerText = '❌'
+        eraserButton.style.width = '50px'
         eraserButton.addEventListener('click', () => {
             this.eraserMode = !this.eraserMode;
             this.panMode = false;
