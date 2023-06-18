@@ -6,6 +6,7 @@ import { getGlobal } from './globals';
 
 export class DrawingsDisplay {
     container: PIXI.Container
+    childContainer: PIXI.Container = new PIXI.Container()
     renderer: PIXI.Renderer
 
     drawings: Map<number, PIXI.Sprite> = new Map()
@@ -13,6 +14,7 @@ export class DrawingsDisplay {
 
     constructor(container: PIXI.Container, renderer: PIXI.Renderer) {
         this.container = container
+        this.container.addChild(this.childContainer)
         // @ts-ignore
         this.renderer = renderer;
         this.drawBorders();
@@ -49,10 +51,11 @@ export class DrawingsDisplay {
         sprite.position.y = box.y - 1
         this.drawings.set(fullStroke.id, sprite)
 
-        this.container.addChild(sprite)
-        // this.container.addChild(graphics)
+        this.childContainer.addChild(sprite)
+        graphics.destroy()
+        // this.childContainer.addChild(graphics)
 
-        console.log('added finished drawing', fullStroke.id, box.x, box.y, box.width, box.height, renderTexture.width, renderTexture.height, graphics.width, graphics.height)
+        console.log('added finished drawing', fullStroke.id)
     }
 
     addInProgressDrawing(fullStroke: FullStroke) {
@@ -67,13 +70,13 @@ export class DrawingsDisplay {
         // graphics.width = box.width
         // graphics.height = box.height
         this.progressDrawings.set(fullStroke.id, graphics)
-        this.container.addChild(graphics)
+        this.childContainer.addChild(graphics)
         console.log('updated in progress drawing', fullStroke.id)
     }
 
     deleteInProgressDrawing(strokeId: number) {
         if (this.progressDrawings.has(strokeId)) {
-            const removed = this.container.removeChild(this.progressDrawings.get(strokeId)!)
+            const removed = this.childContainer.removeChild(this.progressDrawings.get(strokeId)!)
             console.log('deleted in progress drawing', strokeId, removed)
             this.progressDrawings.get(strokeId)!.destroy()
             this.progressDrawings.delete(strokeId)
@@ -84,7 +87,7 @@ export class DrawingsDisplay {
 
     deleteDrawing(strokeId: number) {
         if (this.drawings.has(strokeId)) {
-            const removed = this.container.removeChild(this.drawings.get(strokeId)!)
+            const removed = this.childContainer.removeChild(this.drawings.get(strokeId)!)
             console.log('deleted drawing', strokeId, removed)
             this.drawings.get(strokeId)!.destroy()
             this.drawings.delete(strokeId)
@@ -99,13 +102,12 @@ export class DrawingsDisplay {
             this.deleteDrawing(fullStroke.id)
             return
         }
-        // if (fullStroke.finished) {
-        //     this.deleteInProgressDrawing(fullStroke.id)
-        //     this.addFinishedDrawing(fullStroke)
-        // } else {
-        //     this.addInProgressDrawing(fullStroke)
-        // }
-        this.addInProgressDrawing(fullStroke)
+        if (fullStroke.finished) {
+            this.deleteInProgressDrawing(fullStroke.id)
+            this.addFinishedDrawing(fullStroke)
+        } else {
+            this.addInProgressDrawing(fullStroke)
+        }
     }
 
     handleFullDump(data: FullDump) {

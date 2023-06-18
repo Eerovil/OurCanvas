@@ -41,6 +41,7 @@ function showLoading() {
   loading.style.backgroundColor = 'white'
   loading.style.zIndex = '1000'
   loading.style.display = 'flex'
+  loading.style.flexDirection = 'column'
   loading.style.justifyContent = 'center'
   loading.style.alignItems = 'center'
   loading.style.fontSize = '2em'
@@ -48,7 +49,21 @@ function showLoading() {
   loading.style.color = 'black'
   loading.innerText = 'Ladataan...'
   loading.id = 'loading-screen'
+
+  const progress = document.createElement('progress')
+  progress.style.width = '50%'
+  progress.style.height = '20px'
+  progress.style.marginTop = '20px'
+  progress.style.marginBottom = '20px'
+  loading.appendChild(progress)
+
   document.body.appendChild(loading)
+}
+
+function setLoadProgress(progress: number) {
+  const loading = document.querySelector<HTMLDivElement>('#loading-screen')!
+  const progressBar = loading.querySelector<HTMLProgressElement>('progress')!
+  progressBar.value = progress
 }
 
 function dismissLoading() {
@@ -170,7 +185,6 @@ async function main() {
   socketHandler.partialDumpCallbacks.push((data: PartialDump) => {
     drawingsDisplay.handlePartialDump(data);
   })
-  drawingsDisplay.handleFullDump(fullDump)
 
   const userDrawHandler = new UserDrawHandler(userId, viewport);
   userDrawHandler.startStrokeHandler = (x: number, y: number, penSize: number, colorId: number, erase: boolean) => {
@@ -186,6 +200,15 @@ async function main() {
     userDrawHandler.handlePartialDump(data);
   })
 
+  setLoadProgress(0.5);
+  const totalStrokeCount = Object.keys(fullDump.strokes).length;
+  let count = 0;
+  for (const strokeId in fullDump.strokes) {
+    drawingsDisplay.addDrawing(fullDump.strokes[strokeId])
+    await new Promise((resolve) => setTimeout(resolve, 1))
+    setLoadProgress(0.5 + 0.5 * count / totalStrokeCount);
+    count++;
+  }
   // pixiApp.ticker.add(() => {
   //   gameMap.updateAllEntities();
   // });
