@@ -1,5 +1,6 @@
 import './style.css' // @ts-ignore
 import * as PIXI from 'pixi.js'
+import { CanvasRenderer } from '@pixi/canvas-renderer';
 import { initNetwork } from './socketUtils.ts'
 import { UserDrawHandler } from './userDraw.ts';
 import { DrawingsDisplay } from './othersDraw.ts';
@@ -190,7 +191,7 @@ async function main() {
   if (nickname != 'TV') {
     options.resolution = window.devicePixelRatio || 1
     options.resizeTo = window
-    options.autoStart = true
+    options.renderer = CanvasRenderer;
   }
 
   console.log('options', options)
