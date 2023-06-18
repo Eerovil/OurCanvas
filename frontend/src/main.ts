@@ -24,20 +24,20 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 `
 
 
-// function parseQueryParams() {
-//   const params = new URLSearchParams(window.location.search)
-//   const ret: { [key: string]: string } = {}
-//   for (const [key, value] of params.entries()) {
-//     ret[key] = value
-//   }
-//   return ret
-// }
+function parseQueryParams() {
+  const params = new URLSearchParams(window.location.search)
+  const ret: { [key: string]: string } = {}
+  for (const [key, value] of params.entries()) {
+    ret[key] = value
+  }
+  return ret
+}
 
-// function setQueryParam(key: string, value: string) {
-//   const url = new URL(window.location.href)
-//   url.searchParams.set(key, value)
-//   window.history.replaceState({}, '', url.toString())
-// }
+function setQueryParam(key: string, value: string) {
+  const url = new URL(window.location.href)
+  url.searchParams.set(key, value)
+  window.history.replaceState({}, '', url.toString())
+}
 
 function showLoading() {
   const loading = document.createElement('div')
@@ -91,15 +91,14 @@ function dismissLoading() {
 async function main() {
   showLoading();
   setLoadProgress(0.1);
-
+  (window as any).spritesDrawn = 0
   const globalStrokeMap: FullStrokeMap = {}
   const global = getGlobal();
   const colors: ColorMap = global.colors;
   const users: UserMap = {}
   let mapSize: number[];
 
-  // let nickname: string = parseQueryParams()['nickname']
-  let nickname = null;
+  let nickname: string = parseQueryParams()['nickname']
 
   // if (!nickname) {
   //   nickname = prompt('Kirjoita nimesi') || 'Anonymous'
@@ -108,7 +107,8 @@ async function main() {
   if (!nickname) {
     nickname = 'Anonymous' + Math.floor(Math.random() * 10000)
   }
-  // setQueryParam('nickname', nickname);
+  setQueryParam('nickname', nickname);
+  (window as any).nickname = nickname
 
   let fullDump: FullDump;
 
