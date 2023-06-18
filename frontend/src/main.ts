@@ -135,6 +135,7 @@ async function main() {
       Object.assign(colors, data.colors)
       Object.assign(users, data.users)
       mapSize = data.mapSize;
+      console.log('initial Full dump received')
     },
     nickname: nickname,
   })

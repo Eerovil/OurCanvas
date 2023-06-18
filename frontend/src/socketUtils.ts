@@ -66,6 +66,7 @@ class socketUtils {
         this.socket.on('partialDump', (data: PartialDump) => {
             this.handlePartialDump(data);
         });
+        console.log("afterFirstConnect done");
     }
 
     waitUntilConnected() {
