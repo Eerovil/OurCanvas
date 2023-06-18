@@ -112,6 +112,21 @@ async function main() {
 
   let fullDump: FullDump;
 
+  if (nickname == 'TV') {
+    setTimeout(() => {
+      (window as any).debuggerConnected = true
+    }, 30000)
+    await new Promise((resolve) => {
+      const checkOK = () => {
+        if ((window as any).debuggerConnected) {
+          resolve(null)
+        }
+        setTimeout(checkOK, 100)
+      }
+      checkOK()
+    });
+  }
+
   setLoadProgress(0.2, "Yhdistetään...");
   const socketHandler = await initNetwork({
     fullDumpCallback: (data: FullDump) => {
