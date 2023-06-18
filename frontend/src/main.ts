@@ -150,6 +150,7 @@ async function main() {
         console.log('map size is set')
         resolve(null)
       } else {
+        console.log('map size is not set')
         setTimeout(mapSizeIsSet, 100)
       }
     }
