@@ -121,7 +121,7 @@ export class UserDrawHandler {
             this.updatePanMode();
         }
 
-        const allPenSizes = [1, 3, 6, 10, 15, 30]
+        const allPenSizes = [1, 3, 6, 10, 15, 30, 60]
         for (const penSize of allPenSizes) {
             const penSizeButton = document.createElement('button')
             penSizeButton.classList.add('penSizeButton')

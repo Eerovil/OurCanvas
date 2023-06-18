@@ -180,9 +180,13 @@ if __name__ == '__main__':
                 db.session.add(Color(name="blue", hex="#0074b4"))
                 db.session.add(Color(name="violetblue", hex="#000092"))
                 db.session.add(Color(name="yellow", hex="#ffff6a"))
+                db.session.add(Color(name="pink", hex="#ff8ab8"))
+                db.session.add(Color(name="purple", hex="#7f3fbf"))
+                db.session.add(Color(name="skin", hex="#ff9b77"))
                 db.session.add(Color(name="orange", hex="#ff6412"))
                 db.session.add(Color(name="brown", hex="#431f16"))
                 db.session.add(Color(name="silver", hex="#a3a1a3"))
+                db.session.add(Color(name="white", hex="#ffffff"))
                 db.session.commit()
 
     socketio.run(app, debug=True, host="0.0.0.0", port=5175)
