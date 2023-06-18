@@ -22,12 +22,16 @@ class socketUtils {
     constructor(props: socketUtilsProps) {
         this.nickname = props.nickname
         this.fullDumpCallback = props.fullDumpCallback || (() => { })
-        let reloadTimeout: any;
+
         try {
             let transport = ['websocket', 'polling'];
-            const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
-            if (iOS) {
-                transport = ['polling'];
+            try {
+                const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+                if (iOS) {
+                    transport = ['polling'];
+                }
+            } catch (e) {
+                console.log("Error: ", e);
             }
             this.socket = io(URL, {
                 path: "/ourcanvas/socket.io",
