@@ -164,10 +164,10 @@ async function main() {
         maxWidth: mapSize[0],
         maxHeight: mapSize[1],
       })
-    // Zoom in a bit
-    viewport.scale.set(0.8);
-    // Pan to a random location
-    viewport.moveCorner(Math.random() * (mapSize[0] - window.innerWidth), Math.random() * (mapSize[1] - window.innerHeight));
+      viewport.fitWorld(true);
+      viewport.setZoom(0.1);
+      viewport.x = 0;
+      viewport.y = 0;
   } else {
     // Zoom out a bit
     viewport
@@ -214,6 +214,20 @@ async function main() {
   //   gameMap.updateAllEntities();
   // });
   dismissLoading();
+
+  if (isMobile) {
+    const viewX = Math.random() * (mapSize[0] - window.innerWidth) + window.innerWidth;
+    const viewY = Math.random() * (mapSize[1] - window.innerHeight) + window.innerHeight;
+    const scale = 0.8;
+    setTimeout(() => {
+      viewport.animate({
+        time: 2000,
+        position: new PIXI.Point(viewX, viewY),
+        scale: scale,
+        ease: 'easeInOutSine',
+      })
+    }, 500)
+  }
 }
 
 
