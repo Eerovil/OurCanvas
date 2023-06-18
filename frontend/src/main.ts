@@ -230,6 +230,7 @@ async function main() {
     viewport
       .pinch()
       .decelerate()
+      .drag()
     viewport.fitWorld(true);
     const scale = Math.min(window.innerWidth / mapSize[0], window.innerHeight / mapSize[1]);
     viewport.setZoom(scale / 2);

@@ -26,6 +26,7 @@ export class UserDrawHandler {
     selectedColorId: number = 1;
     selectedPenSize: number = 6;
     eraserMode: boolean = false;
+    panMode: boolean = true;
 
     unsentStrokes: UnsentStroke[] = [];
     blockSend: boolean = false;
@@ -82,52 +83,113 @@ export class UserDrawHandler {
 
 
         const leftSide = document.createElement('div')
+        const rightSide = document.createElement('div')
+        const eraserButton = document.createElement('button')
+        const panButton = document.createElement('button')
+
+        const updateInputs = () => {
+            for (const penSizeInput of document.getElementsByClassName('penSizeButton')) {
+                const penSizeButton = penSizeInput as HTMLButtonElement
+                if (parseInt(penSizeButton.innerText) === this.selectedPenSize) {
+                    penSizeButton.style.border = '2px solid red'
+                } else {
+                    penSizeButton.style.border = '2px solid grey'
+                }
+            }
+
+            for (const colorInput of document.getElementsByClassName('colorButton')) {
+                const colorButton = colorInput as HTMLButtonElement
+                if (parseInt(colorButton.dataset.colorId!) === this.selectedColorId) {
+                    colorButton.style.border = '2px solid red'
+                } else {
+                    colorButton.style.border = '2px solid grey'
+                }
+            }
+
+            if (this.eraserMode) {
+                eraserButton.style.border = '2px solid red'
+            } else {
+                eraserButton.style.border = '2px solid grey'
+            }
+
+            if (this.panMode) {
+                panButton.style.border = '2px solid red'
+            } else {
+                panButton.style.border = '2px solid grey'
+            }
+
+            this.updatePanMode();
+        }
 
         const allPenSizes = [1, 3, 6, 10, 15, 30]
         for (const penSize of allPenSizes) {
             const penSizeButton = document.createElement('button')
+            penSizeButton.classList.add('penSizeButton')
             penSizeButton.innerText = penSize.toString()
             penSizeButton.addEventListener('click', () => {
                 this.selectedPenSize = penSize
+                this.eraserMode = false;
+                this.panMode = false;
+                updateInputs();
             })
             leftSide.appendChild(penSizeButton)
         }
         toolBar.appendChild(leftSide)
 
-        const rightSide = document.createElement('div')
         rightSide.style.height = '100%'
 
         const allColors = getGlobal().colors
         for (const colorId in allColors) {
             const colorButton = document.createElement('button')
+            colorButton.classList.add('colorButton')
             colorButton.innerHTML = '&nbsp;'
+            colorButton.dataset.colorId = colorId
             colorButton.style.height = '100%';
             colorButton.style.width = '25px';
             colorButton.style.backgroundColor = allColors[colorId].hex;
             colorButton.addEventListener('click', () => {
                 this.selectedColorId = parseInt(colorId)
                 this.eraserMode = false;
-                // Show the color button as selected
-                for (const child of rightSide.children) {
-                    (child as HTMLButtonElement).style.border = '2px solid grey'
-                }
-                colorButton.style.border = '2px solid black'
+                this.panMode = false;
+                updateInputs();
             })
             rightSide.appendChild(colorButton)
         }
 
         toolBar.appendChild(rightSide)
 
-        const eraserButton = document.createElement('button')
+        panButton.innerText = 'Käsi'
+        panButton.addEventListener('click', () => {
+            this.panMode = !this.panMode;
+            this.eraserMode = false;
+            updateInputs();
+        })
+        toolBar.appendChild(panButton)
+
         eraserButton.innerText = 'Kumi'
         eraserButton.addEventListener('click', () => {
-            this.eraserMode = true;
+            this.eraserMode = !this.eraserMode;
+            this.panMode = false;
+            updateInputs();
         })
         toolBar.appendChild(eraserButton)
 
         document.body.appendChild(toolBar)
 
+        updateInputs();
         return toolBar
+    }
+
+    updatePanMode() {
+        // pause drag plugin
+        if (this.panMode) {
+            (this.container as Viewport).plugins.get('drag')!.resume()
+            console.log("resume drag")
+        }
+        else {
+            (this.container as Viewport).plugins.get('drag')!.pause()
+            console.log("pause drag")
+        }
     }
 
     sendUpdates() {
@@ -188,6 +250,9 @@ export class UserDrawHandler {
     }
 
     mouseDownHandler(x: number, y: number) {
+        if (this.panMode) {
+            return;
+        }
         x = Math.round(x)
         y = Math.round(y)
         if (this.stroking) {
@@ -227,6 +292,9 @@ export class UserDrawHandler {
     }
 
     mouseMoveHandler(x: number, y: number) {
+        if (this.panMode) {
+            return;
+        }
         x = Math.round(x)
         y = Math.round(y)
         this.finalizeStartStroke();
